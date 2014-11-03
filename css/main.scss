@@ -3,9 +3,9 @@
 
 @import 'utils';
 
-@import url(http://fonts.googleapis.com/css?family=Gentium+Basic:400,700,400italic);
+@import url(http://fonts.googleapis.com/css?family=Gentium+Book+Basic:400,700,400italic|Gentium+Basic:400);
 
-$body-font-family: "Gentium Basic", serif;
+$body-font-family: "Gentium Book Basic", serif;
 $body-font-size: 16px;
 $body-line-height: 1.5;
 
@@ -71,14 +71,16 @@ main {
 
 h1,
 h2,
-h3 {
+h3,
+h4 {
+  font-family: "Gentium Basic", serif;
+  font-weight: normal;
   line-height: 1.2;
   margin: 0;
 }
 
 h1 {
   font-size: 40px;
-  font-weight: normal;
   padding: 16px 0;
 }
 
@@ -103,13 +105,17 @@ h2:before {
 
 h2 {
   font-size: 30px;
-  font-weight: normal;
   padding-top: 16px;
 }
 
 h3 {
-  font-size: 20px;
-  margin-top: 16px;
+  font-size: 24px;
+  margin: 16px 0;
+}
+
+h4 {
+  font-size: 18px;
+  margin: 16px 0;
 }
 
 .section-link {
@@ -146,7 +152,13 @@ dd {
   margin-left: 2em;
 }
 
-code {
+code, pre {
+  background: lighten($pale, 5%);
   font-family: "Ubuntu Mono", Inconsolata, Consolas, monospace;
   font-size: 14px;
+  padding: 0 2px;
+}
+
+pre code {
+  display: block;
 }
