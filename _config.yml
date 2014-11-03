@@ -1,0 +1,14 @@
+# Site settings
+title: notes.joshuagoodw.in
+email: j@joshuagoodw.in
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://notes.joshuagoodw.in" # the base hostname & protocol for your site
+
+# Build settings
+markdown: kramdown
+
+kramdown:
+  math_engine: itex2mml
+
+sass:
+  style: :compressed

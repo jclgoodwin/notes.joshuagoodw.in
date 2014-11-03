@@ -1,0 +1,15 @@
+---
+layout: default
+---
+
+<h1>notes.joshuagoodw.in</h1>
+
+<p>Hello, this is where my fancy book learning goes.</p>
+
+<h2>Year 3</h2>
+
+<ul>
+{% for page in site.pages %}{% if page.title %}
+  <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+{% endif %}{% endfor %}
+</ul>

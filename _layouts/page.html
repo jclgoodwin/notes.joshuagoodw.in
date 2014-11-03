@@ -1,0 +1,17 @@
+---
+layout: default
+---
+<h1>{{ page.title }}</h1>
+
+{{ content }}
+
+<script>
+window.onload = function () {
+  var headings = document.getElementsByTagName('h2');
+  for (var i = 0; i < headings.length; i++) {
+    if (headings[i].id) {
+      headings[i].innerHTML += ' <a class="section-link" href="#' + headings[i].id + '">&sect;</a>';
+    }
+  }
+};
+</script>

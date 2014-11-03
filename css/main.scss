@@ -1,0 +1,152 @@
+---
+---
+
+@import 'utils';
+
+@import url(http://fonts.googleapis.com/css?family=Gentium+Basic:400,700,400italic);
+
+$body-font-family: "Gentium Basic", serif;
+$body-font-size: 16px;
+$body-line-height: 1.5;
+
+$link-color: #cc005f;
+$pale: #ffcce4;
+
+
+body {
+  color: #333;
+  font-family: $body-font-family;
+  font-size: $body-font-size;
+  line-height: $body-line-height;
+  margin: 0;
+}
+
+a {
+  border-bottom: 1px solid #ffcce4;
+  color: $link-color;
+  text-decoration: none;
+}
+
+a:focus,
+a:active {
+  background: #ffcce4;
+}
+
+.site-header {
+  background: $pale;
+
+  nav {
+    max-width: 640px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 0 5px;
+
+    ul, li {
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      display: inline;
+    }
+
+    a {
+      border: 0;
+      display: block;
+      float: left;
+      padding: .5em 10px;
+    }
+
+    a:hover {
+      background: darken($pale, 5%);
+    }
+  }
+}
+
+main {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+  margin: 0;
+}
+
+h1 {
+  font-size: 40px;
+  font-weight: normal;
+  padding: 16px 0;
+}
+
+h1:after,
+h2:before {
+  background: $pale;
+  content: "";
+  display: block;
+  height: 1px;
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+h1:after {
+  margin-top: 16px;
+}
+
+h2:before {
+  margin-top: -16px;
+}
+
+h2 {
+  font-size: 30px;
+  font-weight: normal;
+  padding-top: 16px;
+}
+
+h3 {
+  font-size: 20px;
+  margin-top: 16px;
+}
+
+.section-link {
+  color: $pale;
+  font-size: 18px;
+  border: 0;
+  vertical-align: middle;
+}
+
+main {
+  margin-bottom: 48px;
+}
+
+p {
+  margin: 16px 0;
+}
+
+ul, ol {
+  margin: 16px 0;
+  padding-left: 20px;
+
+  li {
+    ul, ol {
+      margin: 0;
+    }
+  }
+}
+
+dl {
+  margin: 16px 0;
+}
+
+dd {
+  margin-left: 2em;
+}
+
+code {
+  font-family: "Ubuntu Mono", Inconsolata, Consolas, monospace;
+  font-size: 14px;
+}
