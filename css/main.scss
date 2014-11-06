@@ -138,7 +138,8 @@ ul, ol {
   padding-left: 20px;
 
   li {
-    ul, ol {
+    ul,
+    ol {
       margin: 0;
     }
   }
@@ -152,7 +153,8 @@ dd {
   margin-left: 2em;
 }
 
-code, pre {
+code,
+pre {
   background: lighten($pale, 5%);
   font-family: "Ubuntu Mono", Inconsolata, Consolas, monospace;
   font-size: 14px;
@@ -161,4 +163,22 @@ code, pre {
 
 pre code {
   display: block;
+}
+
+math {
+  font-size: 18px;
+}
+
+table {
+  border: 1px solid $pale;
+  border-collapse: collapse;
+  border-width: 1px 1px 0 0;
+
+  th,
+  td {
+    border: 1px solid $pale;
+    border-width: 0 0 1px 1px;
+    padding: 0 5px;
+    text-align: center;
+  }
 }

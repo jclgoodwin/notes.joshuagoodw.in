@@ -5,7 +5,11 @@ fulltitle: Analysable Real-Time Systems
 ---
 
 
+
+
 * [Module website](http://www-module.cs.york.ac.uk/arts/ARTS_Part_1.html)
+
+
 
 
 ## Introduction
@@ -39,7 +43,11 @@ Event-triggered
 : Triggered by external or internal event. **Sporadic** if there's a bound on the event's _arrival interval_, **aperiodic** otherwise
 
 
+
+
 ## Computational models
+
+(Lectures 2 and 3)
 
 ### Control loop
 
@@ -75,7 +83,6 @@ Output jitter
 
 Worst-case execution time (WCET), C
 : Obvious, right?
-
 
 ### Event loop
 
@@ -126,7 +133,7 @@ loop with (10ms every 50ms)
 end loop
 ~~~
 
-## Task interactions
+### Task interactions
 
 Recall the "state", `S`, from the control loop mentioned above.
 This state may be shared with other computations, which complicates matters.
@@ -140,19 +147,127 @@ One approach to scheduling. Happen to be **completely deterministic**, which is 
 
 "The design is concurrent but the code is produced as a collection of procedures."
 
-
-
 #### Limitations
 
 
 
-## Lecture 11 -- EDF scheduling
 
-For most task models , the bound on the utilisation with Earliest Deadline First is 1 -- which is clearly better than 0.69 (the bound for ).
+## Scheduling real-time systems
+
+[(Lectures 4 and 5)](http://www-course.cs.york.ac.uk/arts/Lect4and5.pdf)
+
+## A response time calculation
+
+The important equation:
 
 $$
-U <= 1
+R_i
+=
+C_i
++
+\sum _{j \in hp(i)} \left\lceil \frac{R_i}{T_j} \right\rceil C_j
+$$
+
+$$hp(i)$$ is the set of tasks with priority ≥ that of task i. The strange brackets denote a **ceiling function**. The appearance of $$R_i$$ on both sides of the equation suggests a **recurrence relation**.
+
+### Computing the actual answer
+
+Let's _do_ an example. I nicked this task-set from the tutorials worksheet, and prioritised it deadline-monotonically (which is an optimal ordering):
+
+ Task |  T  |  C  | Priority
+------|-----|-----|----------
+   Q  |  10 |  2  | 4
+------|-----|-----|----------
+   S  |  12 |  6  | 3
+------|-----|-----|----------
+   V  |  20 |  6  | 1
+------|-----|-----|----------
+   Z  |  30 |  4  | 2
+
+Start with the highest-priority task, Q, because it's the easiest:
+
+$$
+\begin{gathered}
+hp(Q) = \emptyset
+\\
+\therefore R_Q = C_Q = 2
+\end{gathered}
+$$
+
+Then S (priority 3):  
+
+$$
+\begin{split}
+R_S &= C_S + \left\lceil \frac{ R_S }{ T_Q }  \right\rceil C_Q \\
+    &= 6   + \left\lceil \frac{ R_S }{ 10  }  \right\rceil 2
+\end{split}
+$$
+
+$$
+\begin{aligned}
+  6 + 1 * 2 &= 8 \\
+  6 + \left\lceil \frac { 8 }{ 10 } \right\rceil 2 &= 8 \\
+  \therefore R_S &= 8
+\end{aligned}
+$$
+
+Then Z (priority 2):
+
+$$
+R_Z = 4 +
+\left\lceil \frac{ R_Z }{ 10 }  \right\rceil 2 +
+\left\lceil \frac{ R_Z }{ 30 }  \right\rceil 6
+$$
+
+Then V (priority 1):
+
+$$
+R_Z = 6 +
+\left\lceil \frac{ R_Z }{ 10 }  \right\rceil 2 +
+\left\lceil \frac{ R_Z }{ 30 }  \right\rceil 6 +
+\left\lceil \frac{ R_Z }{ 12 }  \right\rceil 4
 $$
 
 
-(Least laxity also has $$U <= 1$$, but remember )
+
+
+## Extending the task model
+
+(Lecture 6)
+
+
+
+
+## Priority ceiling protocols
+
+(Lecture 7)
+
+
+
+
+## Further extending the model
+
+(Lectures 8, 9 and 10)
+
+
+
+
+## EDF scheduling
+
+(Lecture 11)
+
+
+
+
+## WCET analysis
+
+(Lecture 12)
+
+So far, worst-case execution times have been conveniently provided.
+Where do they come from?
+
+Turns out WCET analysis is a big, hard problem.
+The unsolvability of the halting problem could suggest it's impossible!
+Needless to say, we'll only scratch the surface here.
+
+
