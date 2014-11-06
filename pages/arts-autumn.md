@@ -134,10 +134,25 @@ This state may be shared with other computations, which complicates matters.
 Separate computations must wait to access the state.
 This must be done properly: we don't want a tight-deadline computation to be waiting for one that has a long one.
 
-### Cyclic exectutives
+### Cyclic executives
 
 One approach to scheduling. Happen to be **completely deterministic**, which is cool.
 
 "The design is concurrent but the code is produced as a collection of procedures."
 
 
+
+#### Limitations
+
+
+
+## Lecture 11 -- EDF scheduling
+
+For most task models , the bound on the utilisation with Earliest Deadline First is 1 -- which is clearly better than 0.69 (the bound for ).
+
+$$
+U <= 1
+$$
+
+
+(Least laxity also has $$U <= 1$$, but remember )
