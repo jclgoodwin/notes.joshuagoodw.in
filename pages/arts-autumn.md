@@ -134,10 +134,90 @@ This state may be shared with other computations, which complicates matters.
 Separate computations must wait to access the state.
 This must be done properly: we don't want a tight-deadline computation to be waiting for one that has a long one.
 
-### Cyclic exectutives
+### Cyclic executives
 
 One approach to scheduling. Happen to be **completely deterministic**, which is cool.
 
 "The design is concurrent but the code is produced as a collection of procedures."
+
+
+
+
+
+
+
+
+
+## A response time calculation
+
+The important equation:
+
+$$
+R_i
+=
+C_i
++
+\sum _{j \in hp(i)} \left\lceil \frac{R_i}{T_j} \right\rceil C_j
+$$
+
+$$hp(i)$$ is the set of tasks with priority ≥ that of task i. The strange brackets denote a **ceiling function**. The appearance of $$R_i$$ on both sides of the equation suggests a **recurrence relation**.
+
+### Computing the actual answer
+
+Let's _do_ an example. I nicked this task-set from the tutorials worksheet, and prioritised it deadline-monotonically (which is an optimal ordering):
+
+ Task |  T  |  C  | Priority
+------|-----|-----|----------
+   Q  |  10 |  2  | 4
+------|-----|-----|----------
+   S  |  12 |  6  | 3
+------|-----|-----|----------
+   V  |  20 |  6  | 1
+------|-----|-----|----------
+   Z  |  30 |  4  | 2
+
+Start with the highest-priority task, Q, because it's the easiest:
+
+$$
+\begin{gathered}
+hp(Q) = \emptyset
+\\
+\therefore R_Q = C_Q = 2
+\end{gathered}
+$$
+
+Then S (priority 3):  
+
+$$
+\begin{split}
+R_S &= C_S + \left\lceil \frac{ R_S }{ T_Q }  \right\rceil C_Q \\
+    &= 6   + \left\lceil \frac{ R_S }{ 10  }  \right\rceil 2
+\end{split}
+$$
+
+$$
+\begin{aligned}
+  6 + 1 * 2 &= 8 \\
+  6 + \left\lceil \frac { 8 }{ 10 } \right\rceil 2 &= 8 \\
+  \therefore R_S &= 8
+\end{aligned}
+$$
+
+Then Z (priority 2):
+
+$$
+R_Z = 4 +
+\left\lceil \frac{ R_Z }{ 10 }  \right\rceil 2 +
+\left\lceil \frac{ R_Z }{ 30 }  \right\rceil 6
+$$
+
+Then V (priority 1):
+
+$$
+R_Z = 6 +
+\left\lceil \frac{ R_Z }{ 10 }  \right\rceil 2 +
+\left\lceil \frac{ R_Z }{ 30 }  \right\rceil 6 +
+\left\lceil \frac{ R_Z }{ 12 }  \right\rceil 4
+$$
 
 
