@@ -5,7 +5,11 @@ fulltitle: Analysable Real-Time Systems
 ---
 
 
+
+
 * [Module website](http://www-module.cs.york.ac.uk/arts/ARTS_Part_1.html)
+
+
 
 
 ## Introduction
@@ -39,7 +43,11 @@ Event-triggered
 : Triggered by external or internal event. **Sporadic** if there's a bound on the event's _arrival interval_, **aperiodic** otherwise
 
 
+
+
 ## Computational models
+
+(Lectures 2 and 3)
 
 ### Control loop
 
@@ -75,7 +83,6 @@ Output jitter
 
 Worst-case execution time (WCET), C
 : Obvious, right?
-
 
 ### Event loop
 
@@ -126,7 +133,7 @@ loop with (10ms every 50ms)
 end loop
 ~~~
 
-## Task interactions
+### Task interactions
 
 Recall the "state", `S`, from the control loop mentioned above.
 This state may be shared with other computations, which complicates matters.
@@ -140,13 +147,14 @@ One approach to scheduling. Happen to be **completely deterministic**, which is 
 
 "The design is concurrent but the code is produced as a collection of procedures."
 
+#### Limitations
 
 
 
 
+## Scheduling real-time systems
 
-
-
+[(Lectures 4 and 5)](http://www-course.cs.york.ac.uk/arts/Lect4and5.pdf)
 
 ## A response time calculation
 
@@ -243,5 +251,47 @@ $$
   \left\lceil \frac{ R_V }{ 12 } \right\rceil 4
 \end{split}
 $$
+
+
+
+
+## Extending the task model
+
+(Lecture 6)
+
+
+
+
+## Priority ceiling protocols
+
+(Lecture 7)
+
+
+
+
+## Further extending the model
+
+(Lectures 8, 9 and 10)
+
+
+
+
+## EDF scheduling
+
+(Lecture 11)
+
+
+
+
+## WCET analysis
+
+(Lecture 12)
+
+So far, worst-case execution times have been conveniently provided.
+Where do they come from?
+
+Turns out WCET analysis is a big, hard problem.
+The unsolvability of the halting problem could suggest it's impossible!
+Needless to say, we'll only scratch the surface here.
 
 
