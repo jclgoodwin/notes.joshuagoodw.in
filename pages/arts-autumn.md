@@ -43,8 +43,6 @@ Event-triggered
 : Triggered by external or internal event. **Sporadic** if there's a bound on the event's _arrival interval_, **aperiodic** otherwise
 
 
-
-
 ## Computational models
 
 (Lectures 2 and 3)
@@ -133,7 +131,7 @@ loop with (10ms every 50ms)
 end loop
 ~~~
 
-### Task interactions
+### Task interactions and safety
 
 Recall the "state", `S`, from the control loop mentioned above.
 This state may be shared with other computations, which complicates matters.
@@ -141,13 +139,29 @@ This state may be shared with other computations, which complicates matters.
 Separate computations must wait to access the state.
 This must be done properly: we don't want a tight-deadline computation to be waiting for one that has a long one.
 
+### The Ravenscar profile/model
+
+One name for the model we have seen. Later we'll see how Ada supports it. For sporadics, it is insufficient.
+
 ### Cyclic executives
 
 One approach to scheduling. Happen to be **completely deterministic**, which is cool.
 
 "The design is concurrent but the code is produced as a collection of procedures."
 
+Set of "minor cycles" mapped onto a major cycle.
+
 #### Limitations
+
+* "All periods must be a multiple of the minor cycle time"
+* Difficult to incorporate tasks with long T
+* Impossible to incorporate sporadics
+* Diffucult to support flexible scheduling methods
+* Construction is NP-hard
+* In practice, a real program wold have to be split into fixed-sized procedures -- a structure that may not make sense "from a software engineering perspective"
+* Determinism less important than _predictability_
+
+### Task-based execution
 
 
 
@@ -156,7 +170,54 @@ One approach to scheduling. Happen to be **completely deterministic**, which is 
 
 [(Lectures 4 and 5)](http://www-course.cs.york.ac.uk/arts/Lect4and5.pdf)
 
-## A response time calculation
+### Scheduling
+
+Two general parts:
+
+* Algorithm to order the use of system resources (especially the CPU)
+* Way to predict worst-case behaviour of system when that algorithm is applied
+
+### Task-based scheduling
+
+Recall the properties of task-based execution.
+
+* Tasks exist at runtime
+* Each task is either:
+  * Runnable (i.e. probably running),
+  * Suspended waiting for a _timing event_, or
+  * Suspended waiting for a _non-timing event_
+
+### Scheduling approaches
+
+#### Fixed-priority scheduling
+
+* Widely used in real world, so we will emphasise it here
+* Each task has a **fixed, static priority** (computed before runtime)
+* Order of execution is determined (in some way) by the priority
+
+#### Earliest deadline first
+
+* Dynamic
+  * Because absolute deadline not known before runtime
+  * Absolute deadline = relative deadline + release time
+* Execution is determined by absolute deadline
+
+#### Least laxity
+
+* Dynamic
+* Laxity = deadline − work left to do
+
+In practice, if context-switching has any overhead at all, and laxity is rechecked regularly, 
+
+#### Value-n
+
+### Utilisation-based analysis
+
+
+
+### Response time--based analysis
+
+Response time = computation time + interference from other (higher- or equal-priority) tasks
 
 The important equation:
 
@@ -170,9 +231,9 @@ $$
 
 $$hp(i)$$ is the set of tasks with priority ≥ that of task i. The strange brackets denote a **ceiling function**. The appearance of $$R_i$$ on both sides of the equation suggests a **recurrence relation**.
 
-### Computing the actual answer
+#### Example
 
-Let's _do_ an example. I nicked this task-set from the tutorials worksheet, and prioritised it deadline-monotonically (which is an optimal ordering):
+Task-set stolen from the tutorials worksheet, and prioritised deadline-monotonically (which is an optimal ordering):
 
  Task |  T  |  C  | Priority
 ------|-----|-----|----------
@@ -184,7 +245,7 @@ Let's _do_ an example. I nicked this task-set from the tutorials worksheet, and 
 ------|-----|-----|----------
    Z  |  30 |  4  | 2
 
-Start with the highest-priority task, Q, because it's the easiest:
+Start with the highest-priority task, Q, which experiences no interference:
 
 $$
 \begin{gathered}
@@ -266,8 +327,14 @@ $$
 So far, worst-case execution times have been conveniently provided.
 Where do they come from?
 
-Turns out WCET analysis is a big, hard problem.
+Turns out timing analysis is a big, hard problem.
 The unsolvability of the halting problem could suggest it's impossible!
 Needless to say, we'll only scratch the surface here.
+
+### Measurement
+
+A fool's errand. 
+
+### Static analysis
 
 
