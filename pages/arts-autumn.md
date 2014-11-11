@@ -249,44 +249,68 @@ Start with the highest-priority task, Q, which experiences no interference:
 
 $$
 \begin{gathered}
-hp(Q) = \emptyset
+  hp(Q) = \emptyset
 \\
-\therefore R_Q = C_Q = 2
+  \therefore R_Q = C_Q = 2
 \end{gathered}
 $$
 
-Then S (priority 3):  
-
-$$
-\begin{split}
-R_S &= C_S + \left\lceil \frac{ R_S }{ T_Q }  \right\rceil C_Q \\
-    &= 6   + \left\lceil \frac{ R_S }{ 10  }  \right\rceil 2
-\end{split}
-$$
+Then S (priority 3) ($$ hp(Z) = \{Q\}$$):
 
 $$
 \begin{aligned}
-  6 + 1 * 2 &= 8 \\
-  6 + \left\lceil \frac { 8 }{ 10 } \right\rceil 2 &= 8 \\
-  \therefore R_S &= 8
+  R_S
+  = C_S &+ \left\lceil \frac{ R_S }{ T_Q } \right\rceil C_Q
+\\
+  = 6 &+ \left\lceil \frac{ R_S }{ 10 } \right\rceil 2
 \end{aligned}
 $$
 
-Then Z (priority 2):
+Solve the recurrance relation:
 
 $$
-R_Z = 4 +
-\left\lceil \frac{ R_Z }{ 10 }  \right\rceil 2 +
-\left\lceil \frac{ R_Z }{ 30 }  \right\rceil 6
+\begin{aligned}
+  6 + 1 \times 2
+  &= 8
+\\
+  6 + \left\lceil \frac { 8 }{ 10 } \right\rceil 2
+  &= 8
+\\
+  \therefore R_S
+  &= 8
+\end{aligned}
 $$
 
-Then V (priority 1):
+Then Z (priority 2) ($$ hp(Z) = \{Q, S\}$$):
 
 $$
-R_Z = 6 +
-\left\lceil \frac{ R_Z }{ 10 }  \right\rceil 2 +
-\left\lceil \frac{ R_Z }{ 30 }  \right\rceil 6 +
-\left\lceil \frac{ R_Z }{ 12 }  \right\rceil 4
+\begin{aligned}
+  R_Z
+  = C_Z + &
+  \left\lceil \frac{ R_Z }{ T_Q } \right\rceil C_Q +
+  \left\lceil \frac{ R_Z }{ T_S } \right\rceil C_S
+\\
+  = 4 + &
+  \left\lceil \frac{ R_Z }{ 10 } \right\rceil 2 +
+  \left\lceil \frac{ R_Z }{ 30 } \right\rceil 6
+\end{aligned}
+$$
+
+Then V (priority 1) ($$hp(V) = \{Q, S, Z\}$$):
+
+$$
+\begin{aligned}
+  R_V
+  = C_V + &
+  \left\lceil \frac{ R_V }{ T_Q } \right\rceil C_Q +
+  \left\lceil \frac{ R_V }{ T_S } \right\rceil C_S +
+  \left\lceil \frac{ R_V }{ T_Z } \right\rceil C_Z
+\\
+  = 6 + &
+  \left\lceil \frac{ R_V }{ 10 } \right\rceil 2 +
+  \left\lceil \frac{ R_V }{ 30 } \right\rceil 6 +
+  \left\lceil \frac{ R_V }{ 12 } \right\rceil 4
+\end{split}
 $$
 
 
