@@ -1,0 +1,15 @@
+<script src="{{ "/js/modernizr.custom.43932.js" | prepend: site.baseurl }}"></script>
+<script>
+window.onload = function () {
+  var headings = document.querySelectorAll('h2, h3');
+  for (var i = 0; i < headings.length; i++) {
+    if (headings[i].id) {
+      headings[i].innerHTML += ' <a class="section-link" href="#' + headings[i].id + '">&sect;</a>';
+    }
+  }
+};
+Modernizr.load({
+  test: Modernizr.mathml,
+  nope: 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_HTMLorMML'
+});
+</script>
