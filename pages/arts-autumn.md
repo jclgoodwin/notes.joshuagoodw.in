@@ -43,9 +43,12 @@ Event-triggered
 : Triggered by external or internal event. **Sporadic** if there's a bound on the event's _arrival interval_, **aperiodic** otherwise
 
 
+
+
 ## Computational models
 
 (Lectures 2 and 3)
+
 
 ### Control loop
 
@@ -82,6 +85,7 @@ Output jitter
 Worst-case execution time (WCET), C
 : Obvious, right?
 
+
 ### Event loop
 
 For event-triggered activities.
@@ -112,9 +116,11 @@ loop at most every T
 end loop
 ~~~
 
+
 ### Sporadic events
 
 Where the event source has a **minimum arrival interval**.
+
 
 ### Aperiodic events
 
@@ -131,6 +137,7 @@ loop with (10ms every 50ms)
 end loop
 ~~~
 
+
 ### Task interactions and safety
 
 Recall the "state", `S`, from the control loop mentioned above.
@@ -139,9 +146,11 @@ This state may be shared with other computations, which complicates matters.
 Separate computations must wait to access the state.
 This must be done properly: we don't want a tight-deadline computation to be waiting for one that has a long one.
 
+
 ### The Ravenscar profile/model
 
 One name for the model we have seen. Later we'll see how Ada supports it. For sporadics, it is insufficient.
+
 
 ### Cyclic executives
 
@@ -158,8 +167,10 @@ Set of "minor cycles" mapped onto a major cycle.
 * Impossible to incorporate sporadics
 * Diffucult to support flexible scheduling methods
 * Construction is NP-hard
-* In practice, a real program wold have to be split into fixed-sized procedures -- a structure that may not make sense "from a software engineering perspective"
+* In practice, a real program wold have to be split into fixed-sized procedures
+  -- a structure that may not make sense "from a software engineering perspective"
 * Determinism less important than _predictability_
+
 
 ### Task-based execution
 
@@ -170,6 +181,7 @@ Set of "minor cycles" mapped onto a major cycle.
 
 [(Lectures 4 and 5)](http://www-course.cs.york.ac.uk/arts/Lect4and5.pdf)
 
+
 ### Scheduling
 
 Two general parts:
@@ -177,7 +189,7 @@ Two general parts:
 * Algorithm to order the use of system resources (especially the CPU)
 * Way to predict worst-case behaviour of system when that algorithm is applied
 
-### Task-based scheduling
+#### Task-based scheduling
 
 Recall the properties of task-based execution.
 
@@ -186,6 +198,7 @@ Recall the properties of task-based execution.
   * Runnable (i.e. probably running),
   * Suspended waiting for a _timing event_, or
   * Suspended waiting for a _non-timing event_
+
 
 ### Scheduling approaches
 
@@ -198,7 +211,7 @@ Recall the properties of task-based execution.
 #### Earliest deadline first
 
 * Dynamic
-  * Because absolute deadline not known before runtime
+  * Because **absolute deadline** not known before runtime
   * Absolute deadline = relative deadline + release time
 * Execution is determined by absolute deadline
 
@@ -207,11 +220,48 @@ Recall the properties of task-based execution.
 * Dynamic
 * Laxity = deadline − work left to do
 
-In practice, if context-switching has any overhead at all, and laxity is rechecked regularly, 
+In practice, if context-switching has any overhead at all, and laxity is rechecked regularly
+... "non-optimal" conditions during system overload.
 
-#### Value-n
+#### Value-based scheduling
+
+More adaptive than static priorities or simple deadlines.
+
+
+### Necessary and sufficient tests
+
+Necessary
+: Where a test failure means deadlines will be missed
+
+Sufficient
+: Where a test pass means deadlines will be met
+
+Exact
+: Where a test is both necessary and sufficient
+
+
+### Rate monotonic priority assignment
+
+* Each task has a unique priority
+* A task with a shorter period must have 
+
+We say this is optimal -- any [task-set that can be scheduled using preëmptive priority-based scheduling with a fixed-priority assignment scheme] can be scheduled with a rate monotonic assignment sheme. (I.e. it's as good as any fixed-priority assignment scheme.)
+
 
 ### Utilisation-based analysis
+
+* Sufficient but not necessary (sort of pessimistic)
+  * An apparently unschedulable task set may in practice be just fine, then
+* Only works for D=T task sets
+
+As N approaches infinity, the "utilisation bound" -- the maximum schedulable utilisation -- approaches 0.693 (from above).
+
+$$
+U
+=
+\sum ^N _{i=1} \frac{C_i}{T_i} \leq N (2^{ \frac{1}{N} } - 1)
+$$
+
 
 
 
@@ -233,7 +283,7 @@ $$hp(i)$$ is the set of tasks with priority ≥ that of task i. The strange brac
 
 #### Example
 
-Task-set stolen from the tutorials worksheet, and prioritised deadline-monotonically (which is an optimal ordering):
+Task-set stolen from the tutorials worksheet (exercise 5), and prioritised deadline-monotonically (which is an optimal ordering):
 
  Task |  T  |  C  | Priority
 ------|-----|-----|----------
@@ -270,9 +320,15 @@ Solve the recurrance relation:
 
 $$
 \begin{aligned}
-  6 + 1 \times 2
+  w^0_S =
+  6 + \left\lceil \frac { 0 }{ 10 } \right\rceil 2
+  &= 6
+\\
+  w^1_S =
+  6 + \left\lceil \frac { 6 }{ 10 } \right\rceil 2
   &= 8
 \\
+  w^2_S =
   6 + \left\lceil \frac { 8 }{ 10 } \right\rceil 2
   &= 8
 \\
@@ -285,14 +341,38 @@ Then Z (priority 2) ($$ hp(Z) = \{Q, S\}$$):
 
 $$
 \begin{aligned}
-  R_Z
-  = C_Z + &
+  R_Z = C_Z + &
   \left\lceil \frac{ R_Z }{ T_Q } \right\rceil C_Q +
   \left\lceil \frac{ R_Z }{ T_S } \right\rceil C_S
 \\
   = 4 + &
   \left\lceil \frac{ R_Z }{ 10 } \right\rceil 2 +
   \left\lceil \frac{ R_Z }{ 30 } \right\rceil 6
+\\
+  w^0_Z = 4 + &
+  \left\lceil \frac { 0 }{ 10 } \right\rceil 2 +
+  \left\lceil \frac { 0 }{ 30 } \right\rceil 6
+  = 4
+\\
+  w^1_Z = 4 + &
+  \left\lceil \frac { 4 }{ 10 } \right\rceil 2 +
+  \left\lceil \frac { 4 }{ 30 } \right\rceil 6
+  = 12
+\\
+  w^2_Z = 4 + &
+  \left\lceil \frac { 12 }{ 10 } \right\rceil 2 +
+  \left\lceil \frac { 12 }{ 30 } \right\rceil 6
+  = 14
+\\
+  w^3_Z = 4 + &
+  \left\lceil \frac { 14 }{ 10 } \right\rceil 2 +
+  \left\lceil \frac { 14 }{ 30 } \right\rceil 6
+  = 14
+\\
+  \therefore R_Z
+  = 14
+\\
+
 \end{aligned}
 $$
 
@@ -310,8 +390,52 @@ $$
   \left\lceil \frac{ R_V }{ 10 } \right\rceil 2 +
   \left\lceil \frac{ R_V }{ 30 } \right\rceil 6 +
   \left\lceil \frac{ R_V }{ 12 } \right\rceil 4
+\\
+  w^0_V = 6 + &
+  \left\lceil \frac { 0 }{ 10 } \right\rceil 2 +
+  \left\lceil \frac { 0 }{ 30 } \right\rceil 6 +
+  \left\lceil \frac { 0 }{ 12 } \right\rceil 4
+  = 6
+\\
+  w^1_V = 6 + &
+  \left\lceil \frac { 6 }{ 10 } \right\rceil 2 +
+  \left\lceil \frac { 6 }{ 30 } \right\rceil 6 +
+  \left\lceil \frac { 6 }{ 12 } \right\rceil 4
+  = 18
+\\
+  w^2_V = 6 + &
+  \left\lceil \frac { 18 }{ 10 } \right\rceil 2 +
+  \left\lceil \frac { 18 }{ 30 } \right\rceil 6 +
+  \left\lceil \frac { 18 }{ 12 } \right\rceil 4
+  = 24
+\\
+  w^3_V = 6 + &
+  \left\lceil \frac { 24 }{ 10 } \right\rceil 2 +
+  \left\lceil \frac { 24 }{ 30 } \right\rceil 6 +
+  \left\lceil \frac { 24 }{ 12 } \right\rceil 4
+  = 26
+\\
+  w^4_V = 6 + &
+  \left\lceil \frac { 26 }{ 10 } \right\rceil 2 +
+  \left\lceil \frac { 26 }{ 30 } \right\rceil 6 +
+  \left\lceil \frac { 26 }{ 12 } \right\rceil 4
+  = 30
+\\
+  w^5_V = 6 + &
+  \left\lceil \frac { 30 }{ 10 } \right\rceil 2 +
+  \left\lceil \frac { 30 }{ 30 } \right\rceil 6 +
+  \left\lceil \frac { 30 }{ 12 } \right\rceil 4
+  = 30
+\\
+  \therefore R_Z
+  = 30
 \end{split}
 $$
+
+Note that for the tutorial question, most of this working-out was not required
+-- it was quickly obvious that the response time of S (8 ms) exceeds its deadline (7 ms)!
+
+Response time analysis is both a necessary and a sufficient test -- that is to say, it is an exact test.
 
 
 
