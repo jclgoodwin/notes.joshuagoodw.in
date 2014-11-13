@@ -112,5 +112,7 @@ in order to maximize the transmission rate?"
  3      |4    |0.5          |4.5
  4      |4    |0.5          |4.5
 
+(Pour water until all have equal noise + power, )
+
 Goa
 
