@@ -19,12 +19,42 @@ Entropy and information are measured in bits.
 
 Entropy quantifies the number of different values a variable can take. One bit of entropy = two values because $\log 2 = 1$.
 
+Bits of information ≤ bit symbols. For example, a variable may have take the values 01010 or 11000
+(each with probability ½ -- an important condition): that's one bit of information, but multiple bit symbols.
+(Clearly this representation of the variable is sort of inefficient.) 
+
 I could go into more detail but it all makes sense.
 
 
 ## Lecture 2 -- Probability
 
-Recall Bayes's theorem 
+$$
+p(a \vee b) = p(a) + p(b)
+$$
+
+$$
+p(a \wedge b) = p(a) \times p(b)
+$$
+
+### 'Random' or 'stochastic' variables
+
+$$
+X = \{ x, p(x) \}
+$$
+
+..."where the generic outcome x occurs with probability $$P(X=x)=p(x)$$. The
+outcome x is extracted from a set of n elements (range)"
+
+* X may be called a **source** or ensemble
+* x may be called a letter or symbol
+* The range $$X = \{x_1, \cdots, x_n} may be called the **alphabet**
+
+Recall Bayes's theorem:
+
+
+Recall the chain rule:
+
+P(x)
 
 
 
