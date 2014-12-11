@@ -149,7 +149,7 @@ This must be done properly: we don't want a tight-deadline computation to be wai
 
 ### The Ravenscar profile/model
 
-One name for the model we have seen. Later we'll see how Ada supports it. For sporadics, it is insufficient.
+One name for the model we have seen. Later we'll see how Ada supports it. For sporadics, it is inadequate.
 
 
 ### Cyclic executives
@@ -157,8 +157,12 @@ One name for the model we have seen. Later we'll see how Ada supports it. For sp
 One approach to scheduling. Happen to be **completely deterministic**, which is cool.
 
 "The design is concurrent but the code is produced as a collection of procedures."
+Are are no actual "tasks" at runtime -- just procedure calls.
 
 Set of "minor cycles" mapped onto a major cycle.
+
+"The procedures share a common [memory] address space" so can easily pass data between themselves.
+Concurrent access is not possible, so data protection isn't needed.
 
 #### Limitations
 
@@ -171,8 +175,7 @@ Set of "minor cycles" mapped onto a major cycle.
   -- a structure that may not make sense "from a software engineering perspective"
 * Determinism less important than _predictability_
 
-
-### Task-based execution
+...and presumably this approach is incompatible with multiprocessor systems.
 
 
 
@@ -180,6 +183,7 @@ Set of "minor cycles" mapped onto a major cycle.
 ## Scheduling real-time systems
 
 [(Lectures 4 and 5)](http://www-course.cs.york.ac.uk/arts/Lect4and5.pdf)
+
 
 
 ### Scheduling
@@ -206,6 +210,7 @@ Recall the properties of task-based execution.
 
 * Widely used in real world, so we will emphasise it here
 * Each task has a **fixed, static priority** (computed before runtime)
+  - derived only from its temporal requirements (as in deadline-monotonic proirity assigment, explained below)
 * Order of execution is determined (in some way) by the priority
 
 #### Earliest deadline first
@@ -226,6 +231,17 @@ In practice, if context-switching has any overhead at all, and laxity is recheck
 #### Value-based scheduling
 
 More adaptive than static priorities or simple deadlines.
+
+#### Preemption
+
+What happens when a higher-priority task is released while a lower-priority one is executing?
+
+* In a **preemptive scheme**, the higher-priority task is switched to immediately
+  - Preferred because higher-priority tasks can be more reactive
+* In a **non-preemptive scheme**, the lower-priority task is allowed to complete first 
+* **Cooperative dispatching** (or **deferred preemption**) is a "halfway house"...
+
+Various scheduling schemes can have preemptive and non-preemptive variants.
 
 
 ### Necessary and sufficient tests
@@ -254,15 +270,13 @@ We say this is optimal -- any [task-set that can be scheduled using preëmptive 
   * An apparently unschedulable task set may in practice be just fine, then
 * Only works for D=T task sets
 
-As N approaches infinity, the "utilisation bound" -- the maximum schedulable utilisation -- approaches 0.693 (from above).
+As N approaches infinity, the "utilisation bound" -- the maximum jek utilisation -- approaches 0.693 (from above).
 
 $$
 U
 =
 \sum ^N _{i=1} \frac{C_i}{T_i} \leq N (2^{ \frac{1}{N} } - 1)
 $$
-
-
 
 
 ### Response time--based analysis
@@ -479,10 +493,29 @@ Turns out timing analysis is a big, hard problem.
 The unsolvability of the halting problem could suggest it's impossible!
 Needless to say, we'll only scratch the surface here.
 
+
 ### Measurement
 
 A fool's errand. 
 
+
 ### Static analysis
 
 
+## 2014 exam
+
+1.  1.  "Describe the three scheduling schemes: EDF (Earliest Deadline First),
+        FP (Fixed Priority) and LL (Least Laxity).
+        For each give the utilisation bound for schedulability of a task set
+        with implicit deadlines on a single processor system."
+
+        EDF: tasks executed in order of absolute deadline (known only at runtime), shortest D first.
+
+        FP: each task assigned a static, fixed priority before runtime, and executed in that order.
+
+        LL: tasks executed in order of laxity, least L first, where laxity = deadline − remaining computation time. (Dynamic...)
+
+    2.  
+
+
+## 2013 exam
