@@ -169,9 +169,9 @@ Concurrent access is not possible, so data protection isn't needed.
 * "All periods must be a multiple of the minor cycle time"
 * Difficult to incorporate tasks with long T
 * Impossible to incorporate sporadics
-* Diffucult to support flexible scheduling methods
+* Difficult to support flexible scheduling methods
 * Construction is NP-hard
-* In practice, a real program wold have to be split into fixed-sized procedures
+* In practice, a real program would have to be split into fixed-sized procedures
   -- a structure that may not make sense "from a software engineering perspective"
 * Determinism less important than _predictability_
 
@@ -183,7 +183,6 @@ Concurrent access is not possible, so data protection isn't needed.
 ## Scheduling real-time systems
 
 [(Lectures 4 and 5)](http://www-course.cs.york.ac.uk/arts/Lect4and5.pdf)
-
 
 
 ### Scheduling
@@ -210,8 +209,10 @@ Recall the properties of task-based execution.
 
 * Widely used in real world, so we will emphasise it here
 * Each task has a **fixed, static priority** (computed before runtime)
-  - derived only from its temporal requirements (as in deadline-monotonic proirity assigment, explained below)
+  - derived only from its temporal requirements (as in deadline- or rate-monotonic priority assignment, explained below)
 * Order of execution is determined (in some way) by the priority
+
+(1 is the lowest priority; a higher number means a higher priority.)
 
 #### Earliest deadline first
 
@@ -247,10 +248,10 @@ Various scheduling schemes can have preemptive and non-preemptive variants.
 ### Necessary and sufficient tests
 
 Necessary
-: Where a test failure means deadlines will be missed
+: Where a test failure means deadlines will be missed (a pass is necessary)
 
 Sufficient
-: Where a test pass means deadlines will be met
+: Where a test pass means deadlines will be met (is sufficient evidence)
 
 Exact
 : Where a test is both necessary and sufficient
@@ -259,9 +260,9 @@ Exact
 ### Rate monotonic priority assignment
 
 * Each task has a unique priority
-* A task with a shorter period must have 
+* A task with a shorter period must have a higher priority (higher value)
 
-We say this is optimal -- any [task-set that can be scheduled using preëmptive priority-based scheduling with a fixed-priority assignment scheme] can be scheduled with a rate monotonic assignment sheme. (I.e. it's as good as any fixed-priority assignment scheme.)
+We say this is **optimal** -- any [task-set that can be scheduled using preëmptive priority-based scheduling with a fixed-priority assignment scheme] can be scheduled with a rate monotonic assignment sheme. (I.e. it's as good as any fixed-priority assignment scheme.)
 
 
 ### Utilisation-based analysis
@@ -270,7 +271,7 @@ We say this is optimal -- any [task-set that can be scheduled using preëmptive 
   * An apparently unschedulable task set may in practice be just fine, then
 * Only works for D=T task sets
 
-As N approaches infinity, the "utilisation bound" -- the maximum jek utilisation -- approaches 0.693 (from above).
+As N approaches infinity, the "utilisation bound" -- the maximum schedulable utilisation -- approaches 0.693 (from above).
 
 $$
 U
@@ -502,6 +503,8 @@ A fool's errand.
 ### Static analysis
 
 
+
+
 ## 2014 exam
 
 1.  1.  "Describe the three scheduling schemes: EDF (Earliest Deadline First),
@@ -509,13 +512,83 @@ A fool's errand.
         For each give the utilisation bound for schedulability of a task set
         with implicit deadlines on a single processor system."
 
-        EDF: tasks executed in order of absolute deadline (known only at runtime), shortest D first.
+        EDF
+        : tasks executed in order of absolute deadline (known only at runtime), shortest D first.
 
-        FP: each task assigned a static, fixed priority before runtime, and executed in that order.
+        FP
+        : each task assigned a static, fixed priority before runtime, and executed in that order.
 
-        LL: tasks executed in order of laxity, least L first, where laxity = deadline − remaining computation time. (Dynamic...)
+        LL
+        : tasks executed in order of laxity, least L first, where laxity = deadline − remaining computation time. (Dynamic...)
 
-    2.  
+    2.  "Describe the three run-time characteristics..."
+
+        Preemptive
+        : when a higher-priority task arrives during the execution of a lower-priority task, switches to the higher-priority immediately.
+
+        Non-preemptive
+        : ... the lower-priority task is allowed to finish execution before the higher-priority task is switched to.
+
+        Non-interruptible
+        : ...
+
+    3.  Necessary
+        : where a response-time analysis test failure indicates that task deadlines will be missed.
+
+        Sufficient
+        : where a response-time analysis test pass
+        indicates that task deadlines will be met.
+
+    4.  Optimal priority ordering is rate-monotonic:
+
+        Task | C |  D |  T | Priority
+        -----|---|----|----|---------
+          T1 | 2 | 10 | 10 | **2**
+        -----|---|----|----|---------
+          T2 | 3 |  7 |  8 | **3**
+        -----|---|----|----|---------
+          T3 | 4 | 17 | 17 | **1**
+
+        (T2 has the fastest rate so the highest priority)
+
+        Response time analysis:
+
+        $$ R_{T2} = 3 \lt 7 $$
+
+        ... so T2 is meets its deadline. What about T1?
+
+        $$
+        R_{T1} =
+        2 + \left\lceil \frac{ R_{T1} }{ 3 } \right\rceil 3
+        $$
+
+        Solve recurrence relation:
+
+        $$
+        \begin{aligned}
+          w^0_{T1} =&
+          2 + \left\lceil \frac{ 0 }{ 3 } \right\rceil 3 =
+          2
+          \\
+          w^1_{T1} =&
+          2 + \left\lceil \frac{ 2 }{ 3 } \right\rceil 3 =
+          5
+          \\
+          w^2_{T1} =&
+          2 + \left\lceil \frac{ 5 }{ 3 } \right\rceil 3 =
+          8
+          \\
+          w^3_{T1} =&
+          2 + \left\lceil \frac{ 8 }{ 3 } \right\rceil 3 =
+          11 \gt 10
+        \end{aligned}
+        $$
+
+        We haven't finished solving the reccurance relation,
+        but we know now that T1 misses its deadline,
+        so the task-set is unschedulable.
 
 
 ## 2013 exam
+
+1.
