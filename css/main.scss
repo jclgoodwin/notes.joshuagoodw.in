@@ -145,6 +145,10 @@ ul, ol {
   }
 }
 
+ol ol li {
+  list-style-type: lower-roman;
+}
+
 dl {
   margin: 16px 0;
 }
