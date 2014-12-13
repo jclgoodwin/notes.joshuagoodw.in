@@ -22,14 +22,14 @@ body {
 }
 
 a {
-  border-bottom: 1px solid #ffcce4;
+  border-bottom: 1px solid $pale;
   color: $link-color;
   text-decoration: none;
 }
 
 a:focus,
 a:active {
-  background: #ffcce4;
+  background: $pale;
 }
 
 .site-header {
