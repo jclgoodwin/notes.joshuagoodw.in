@@ -558,35 +558,90 @@ A fool's errand.
         ... so T2 is meets its deadline. What about T1?
 
         $$
-        R_{T1} =
-        2 + \left\lceil \frac{ R_{T1} }{ 3 } \right\rceil 3
+        \begin{aligned}
+          R_{T1} &=
+          C_{T1} + \left\lceil \frac{ R_{T1} }{ T_{T2} } \right\rceil C_{T2}
+          \\
+          &=
+          2 + \left\lceil \frac{ R_{T1} }{ 8 } \right\rceil 3
+        \end{aligned}
         $$
 
         Solve recurrence relation:
 
         $$
         \begin{aligned}
-          w^0_{T1} =&
-          2 + \left\lceil \frac{ 0 }{ 3 } \right\rceil 3 =
+          w^0_{T1} &=
+          2 + \left\lceil \frac{ 0 }{ 8 } \right\rceil 3 =
           2
           \\
-          w^1_{T1} =&
-          2 + \left\lceil \frac{ 2 }{ 3 } \right\rceil 3 =
+          w^1_{T1} &=
+          2 + \left\lceil \frac{ 2 }{ 8 } \right\rceil 3 =
           5
           \\
-          w^2_{T1} =&
-          2 + \left\lceil \frac{ 5 }{ 3 } \right\rceil 3 =
-          8
-          \\
-          w^3_{T1} =&
-          2 + \left\lceil \frac{ 8 }{ 3 } \right\rceil 3 =
-          11 \gt 10
+          w^2_{T1} &=
+          2 + \left\lceil \frac{ 5 }{ 8 } \right\rceil 3 =
+          5 \lt 10
         \end{aligned}
         $$
 
-        We haven't finished solving the reccurance relation,
-        but we know now that T1 misses its deadline,
-        so the task-set is unschedulable.
+        Finally, T3:
+
+        $$
+        \begin{aligned}
+          R_{T3}
+          &=
+          C_{T3} + \left\lceil \frac{ R_{T3} }{ T_{T2} } \right\rceil C_{T2}
+          +
+          \left\lceil \frac{ R_{T3} }{ T_{T1} } \right\rceil C_{T1}
+          \\
+          &=
+          4 + \left\lceil \frac{ R_{T3} }{ 8 } \right\rceil 3
+          +
+          \left\lceil \frac{ R_{T3} }{ 17 } \right\rceil 2
+        \end{aligned}
+        $$
+
+        Solve the recurrence relation:
+
+        $$
+        \begin{aligned}
+          w^0_{T3}
+          &=
+          4 +
+          \left\lceil \frac{ 0 }{ 8 } \right\rceil 3
+          +
+          \left\lceil \frac{ 0 }{ 17 } \right\rceil 2
+          = 4
+          \\
+          w^1_{T3}
+          &=
+          4 +
+          \left\lceil \frac{ 4 }{ 8 } \right\rceil 3
+          +
+          \left\lceil \frac{ 4 }{ 17 } \right\rceil 2
+          = 9
+          \\
+          w^2_{T3}
+          &=
+          4 +
+          \left\lceil \frac{ 9 }{ 8 } \right\rceil 3
+          +
+          \left\lceil \frac{ 9 }{ 17 } \right\rceil 2
+          = 12
+          \\
+          w^3_{T3}
+          &=
+          4 +
+          \left\lceil \frac{ 12 }{ 8 } \right\rceil 3
+          +
+          \left\lceil \frac{ 12 }{ 17 } \right\rceil 2
+          = 
+          12 \lt 17
+        \end{aligned}
+        $$
+
+        So the task-set is schedulable.
 
 
 ## 2013 exam
