@@ -643,6 +643,37 @@ A fool's errand.
 
         So the task-set is schedulable.
 
+    5.  "If, in the above example, Tasks T1 and T3 are deemed to be of a high
+        criticality, and task T2 is of a low criticality, what would be the ideal priority ordering that
+        would still lead to a schedulable system?"
+
+        Task | C |  D |  T | Priority
+        -----|---|----|----|---------
+          T1 | 2 | 10 | 10 | **3**
+        -----|---|----|----|---------
+          T2 | 3 |  7 |  8 | **1**
+        -----|---|----|----|---------
+          T3 | 4 | 17 | 17 | **2**
+
+        (T2 given the lowest priority, then T1 and T3 prioritised rate-monotonically?)
+
+2.  1.  "Explain the function of execution-time servers in real-time systems."
+
+3.  1.  
+
+    2.  
+
+    3.  "The worst-case execution time (WCET) of a task must be determined if the
+        temporal behaviour of a system is to be determined. What are the two main methods
+        available to obtain WCET values?"
+
+        Measurement and static analysis...
+
+        "What are the benefits and drawbacks of these methods?
+
+        "What features of modern processors make estimating WCET difficult?"
+
+    4.  
 
 ## 2013 exam
 
