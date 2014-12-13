@@ -497,10 +497,20 @@ Needless to say, we'll only scratch the surface here.
 
 ### Measurement
 
-A fool's errand. 
+*   Potentially "optimistic" - was the worst-case path measured?
+*   Have to select test data
+    *   Does test data trigger longest _execution trace_?
+*   Measured all possible execution traces?
+*   "Combining WCET of parts" may not "yield the global WCET"
+*   Was the processor's initial state the worst-case state?
+
+A fool's errand? May be useful for rough estimates, though.
 
 
 ### Static analysis
+
+*   "Pessimistic"
+*   Complicated by modern processors' "cache(s), pipelines, out-of-order execution, branch prediction etc"
 
 
 
@@ -670,10 +680,28 @@ A fool's errand.
         Measurement and static analysis...
 
         "What are the benefits and drawbacks of these methods?
+        What features of modern processors make estimating WCET difficult?"
 
-        "What features of modern processors make estimating WCET difficult?"
+        Measurement is likely to be optimistic.
+        It can be useful for a rough estimate of the WCET.
+        It is difficult to be sure that the processor is in the worst-case initial state,
+        that the longest execution trace has been triggered,
+        that rare execition scenarios haven't been missed...
 
-    4.  
+        Static analysis is more pessimistic, but it is more complicated thanks to features of modern processors such as caches, branch prediction, out-of-order execution...
+
+    4.  "Two tasks (only) execute on the same processor. Both tasks have memory
+        requirements (data and code) that _[each?]_ exactly fits into local cache. What are the benefits
+        and drawbacks of: (1) both tasks sharing the full cache, or (2) each task having exactly
+        half the cache statically assigned to them?"
+
+        1: potential for minimum cache misses if tasks do not interfere
+        (i.e. if "they rarely execute at the same time),
+        "each task can make full use of the cache";
+        "worst-case will need to model the number of
+        times the cache is, in effect, switched between the tasks".
+
+        2: no interference, but cache misses "to be expected"...
 
 ## 2013 exam
 
