@@ -515,6 +515,24 @@ A fool's errand? May be useful for rough estimates, though.
 
 
 
+## Multiprocessor systems
+
+[(Lecture 13)](http://www-course.cs.york.ac.uk/arts/Lect13.pdf)
+
+Different to single-processor systems, so analysis is different.
+
+*   Global versus partitioned scheduling
+
+
+### Dhall effect
+
+Where, despite low utilisation, there is unschedulability ...
+
+### TkC priority ordering
+
+
+
+
 ## 2014 exam
 
 1.  1.  "Describe the three scheduling schemes: EDF (Earliest Deadline First),
