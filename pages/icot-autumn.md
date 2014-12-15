@@ -17,13 +17,15 @@ Information is...
 
 Entropy and information are measured in bits.
 
-Entropy quantifies the number of different values a variable can take. One bit of entropy = two values because $\log 2 = 1$.
+Entropy quantifies the number of different values a variable can take. One bit of entropy = two values because $$ \log_2 2 = 1 $$.
 
-Bits of information ≤ bit symbols. For example, a variable may have take the values 01010 or 11000
-(each with probability ½ -- an important condition): that's one bit of information, but multiple bit symbols.
-(Clearly this representation of the variable is sort of inefficient.) 
+№ of _bits of information_ ≤ № of _bit symbols_. For example, a variable may have take the values `01010` or `11000`
+(each with probability ½ -- an important condition): that's one bit of information, but more than one symbol.
+(Clearly this representation of the variable is sort of inefficient, not optimal.) 
 
 I could go into more detail but it all makes sense.
+
+
 
 
 ## Lecture 2 -- Probability
@@ -36,38 +38,88 @@ $$
 p(a \wedge b) = p(a) \times p(b)
 $$
 
+Recall the chain rule:
+
+$$
+p(x, y) = p(x|y)p(y) = p(y|x)p(x)
+$$
+
+Recall Bayes's theorem:
+
+$$
+p(x|y)=\frac{p(y|x)p(x)}{p(y)}
+$$
+
 ### 'Random' or 'stochastic' variables
 
 $$
 X = \{ x, p(x) \}
 $$
 
-..."where the generic outcome x occurs with probability $$P(X=x)=p(x)$$. The
-outcome x is extracted from a set of n elements (range)"
+..."where the generic outcome $$x$$ occurs with probability $$P(X=x)=p(x)$$. The
+outcome $$x$$ is extracted from a set of $$n$$ elements (range)"
 
-* X may be called a **source** or ensemble
-* x may be called a letter or symbol
-* The range $$X = \{x_1, \cdots, x_n} may be called the **alphabet**
+* $$X$$ may be called a **source** or ensemble
+* $$x$$ may be called a letter or symbol
+* The range $$X = \{x_1, \cdots, x_n\}$$ may be called the **alphabet**
 
-Recall Bayes's theorem:
-
-
-Recall the chain rule:
-
-P(x)
 
 
 
 ## Joint and conditional entropy
 
+
 ### Joint entropy
 
-Given a pair of random variables {}
+Given a pair of random variables $$(X, Y)$$:
 
 $$
-H(X,Y)=-\sum_{x,y} p(x,y) \log_2(x,y)
+\begin{aligned}
+  H(X, Y)
+  &= -\sum_{x, y} p(x, y) \log_2 p(x, y)
+  \\
+  &= \sum_{x, y} p(x, y) \log_2 \frac{ 1 }{ p(x, y) }
+\end{aligned}
 $$
 
+"The sum is over the corresponding alphabets $$x \in X$$ and $$y \in Y$$."
+
+#### Subaddititvity
+
+$$
+H(X, Y) \leq H(X) + H(Y)
+$$
+
+In general this can extend to set bigger than pairs ... you can imagine.
+
+(And if $$H(X, Y) = H(X) + H(Y)$$, the variables are independent?)
+
+
+### Conditional entropy
+
+$$
+H(Y|X) = \sum_x p(x)H(Y|X = x)
+$$
+
+where
+
+
+### Chain rule
+
+...connecting joint and conditional entropies.
+
+$$
+\begin{aligned}
+  H(X, Y)
+  =&
+  H(Y|X) + H(X) 
+  \\
+  =&
+  H(X|Y) + H(Y)
+\end{aligned}
+$$
+
+ 
 
 
 ## Summarizing practical
@@ -92,31 +144,25 @@ $$
 1
 $$
 
-1.  "Compute the joint entropy $$H(X,Y)$$"
+"Compute the joint entropy $$H(X ,Y)$$"
 
 $$
 \begin{aligned}
 -(
 &
-\tfrac{1}{4} \log_2 \tfrac{1}{4}
-+
-\tfrac{1}{4} \log_2 \tfrac{1}{4}  
-+
-
-0\\ &
-+
-\tfrac{1}{16} \log_2 \tfrac{1}{16} 
-+
-\tfrac{1}{16} \log_2 \tfrac{1}{16} 
-+
-\tfrac{1}{8} \log_2 \tfrac{1}{8} 
-\\ &
-+
-\tfrac{1}{12} \log_2 \tfrac{1}{12} 
-+
-\tfrac{1}{12} \log_2 \tfrac{1}{12} 
-+
-\tfrac{1}{12} \log_2 \tfrac{1}{12} 
+  \tfrac{1}{4} \log_2 \tfrac{1}{4}
++ \tfrac{1}{4} \log_2 \tfrac{1}{4}
++ 0
+\\
+&
++ \tfrac{1}{16} \log_2 \tfrac{1}{16}
++ \tfrac{1}{16} \log_2 \tfrac{1}{16}
++ \tfrac{1}{8}  \log_2 \tfrac{1}{8}
+\\
+&
++ \tfrac{1}{12} \log_2 \tfrac{1}{12}
++ \tfrac{1}{12} \log_2 \tfrac{1}{12}
++ \tfrac{1}{12} \log_2 \tfrac{1}{12}
 )
 \end{aligned}
 $$
@@ -142,7 +188,4 @@ in order to maximize the transmission rate?"
  3      |4    |0.5          |4.5
  4      |4    |0.5          |4.5
 
-(Pour water until all have equal noise + power, )
-
-Goa
-
+("Pour" "water" until all have as equal noise + power as possible.)
