@@ -10,7 +10,7 @@ This half of the module is half of the module.
 
 ## Lecture 1 -- Introduction
 
-Information is...
+**Information** is...
 
 * a "decrease of ignorance about a source"
 * a "decrease of entropy for a variable"
@@ -76,9 +76,9 @@ Given a pair of random variables $$(X, Y)$$:
 $$
 \begin{aligned}
   H(X, Y)
-  &= -\sum_{x, y} p(x, y) \log_2 p(x, y)
+  =& -\sum_{x, y} p(x, y) \log_2 p(x, y)
   \\
-  &= \sum_{x, y} p(x, y) \log_2 \frac{ 1 }{ p(x, y) }
+  =& \sum_{x, y} p(x, y) \log_2 \frac{ 1 }{ p(x, y) }
 \end{aligned}
 $$
 
@@ -90,23 +90,38 @@ $$
 H(X, Y) \leq H(X) + H(Y)
 $$
 
-In general this can extend to set bigger than pairs ... you can imagine.
+In general this can extend to sets bigger than pairs ... you can imagine.
 
 (And if $$H(X, Y) = H(X) + H(Y)$$, the variables are independent?)
 
 
 ### Conditional entropy
 
+The entropy of Y given X:
+
 $$
 H(Y|X) = \sum_x p(x)H(Y|X = x)
 $$
 
-where
+...where $$H(Y \vert X=x) = -\sum_y p(y \vert x) log_2 p(y \vert x)$$.
+
+An alternative definition:
+
+$${H(Y|X) = -\sum_{x, y} p(x, y) log_2 p(y, x)}$$
+
+
+### Marginal entropy
+
+Recall the marginal distribution:
+
+$$
+p(x) = \sum_y p(x, y)
+$$
 
 
 ### Chain rule
 
-...connecting joint and conditional entropies.
+...connecting joint and conditional entropies:
 
 $$
 \begin{aligned}
@@ -119,7 +134,74 @@ $$
 \end{aligned}
 $$
 
- 
+
+
+
+## Relative entropy and mutual information 
+
+(Lecture 5)
+
+"Two related notions"
+
+
+### Relative entropy
+
+The relative entropy between "two probability distributions $$p(x)$$ and $$q(x)$$ on the same alphabet $$X$$":
+
+$$
+D\left(p||q\right) = \sum_{x}p(x)\log_{2}\frac{p(x)}{q(x)}
+$$
+
+"where we adopt the convention that
+$$0\log\frac{0}{q} = 0\log\frac{0}{0} = 0$$
+and
+$$p\log\frac{p}{0} = \infty$$
+(by continuity)"
+
+Relative entropy is not symmetric.
+
+
+### Mutual information
+
+"The relative entropy between the joint distribution and the joint distribution and the product distribution $$p(x)p(y)$$."
+
+$$
+I(X:Y)=D[p(x,y)||p(x)p(y)]=\sum_{x,y}p(x,y)\log_{2}\frac{p(x,y)}{p(x)p(y)}
+$$
+
+Mutual information _is_ symmetric.
+
+Alternative definition: difference between two Shannon entropies:
+
+$$
+\begin{aligned}
+I(X:Y)
+=&
+H(X)-H(X|Y) 
+\\
+=&
+H(Y)-H(Y|X) 
+\end{aligned}
+$$
+
+What mutual information is is the sort of _intersection_ between the information contentses of $$X$$ and $$U$$.
+
+In a communication channel, mutual information, "which corresponds to a difference
+of entropies, quantifies the information which is transmitted by Alice and
+acquired by Bob". In a noiseless channel, this = the input variable's full information
+content.
+
+#### Conditional mutual information
+
+"given a third variable $$Z$$" (or more):
+
+$$
+I(X : Y | Z) = H(X|Z) - H(X | Y, Z)
+$$
+
+"a simple consequence of the chain rule for entropy"
+
+
 
 
 ## Summarizing practical

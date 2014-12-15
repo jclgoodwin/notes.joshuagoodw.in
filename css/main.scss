@@ -123,6 +123,11 @@ h4 {
   font-size: 18px;
   border: 0;
   vertical-align: middle;
+
+  &:active,
+  &:focus {
+    color: white;
+  }
 }
 
 main {
