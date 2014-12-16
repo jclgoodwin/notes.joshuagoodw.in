@@ -74,12 +74,12 @@ outcome $$x$$ is extracted from a set of $$n$$ elements (range)"
 Given a pair of random variables $$(X, Y)$$:
 
 $$
-\begin{aligned}
+\begin{split}
   H(X, Y)
-  =& -\sum_{x, y} p(x, y) \log_2 p(x, y)
+  & = -\sum_{x, y} p(x, y) \log_2 p(x, y)
   \\
-  =& \sum_{x, y} p(x, y) \log_2 \frac{ 1 }{ p(x, y) }
-\end{aligned}
+  & = \sum_{x, y} p(x, y) \log_2 \frac{ 1 }{ p(x, y) }
+\end{split}
 $$
 
 "The sum is over the corresponding alphabets $$x \in X$$ and $$y \in Y$$."
@@ -124,14 +124,14 @@ $$
 ...connecting joint and conditional entropies:
 
 $$
-\begin{aligned}
+\begin{split}
   H(X, Y)
-  =&
+  & =
   H(Y|X) + H(X) 
   \\
-  =&
+  & =
   H(X|Y) + H(Y)
-\end{aligned}
+\end{split}
 $$
 
 
@@ -169,19 +169,19 @@ $$
 I(X:Y)=D[p(x,y)||p(x)p(y)]=\sum_{x,y}p(x,y)\log_{2}\frac{p(x,y)}{p(x)p(y)}
 $$
 
-Mutual information _is_ symmetric.
+Mutual information _is_ symmetric (it's mutual)
 
 Alternative definition: difference between two Shannon entropies:
 
 $$
-\begin{aligned}
+\begin{split}
 I(X:Y)
-=&
+& =
 H(X)-H(X|Y) 
 \\
-=&
+& =
 H(Y)-H(Y|X) 
-\end{aligned}
+\end{split}
 $$
 
 What mutual information is is the sort of _intersection_ between the information contentses of $$X$$ and $$U$$.
@@ -200,6 +200,52 @@ I(X : Y | Z) = H(X|Z) - H(X | Y, Z)
 $$
 
 "a simple consequence of the chain rule for entropy"
+
+
+
+
+## Gaussian channels
+
+(Lecture 11)
+
+(Notes largely on paper...)
+
+### Capactity
+
+$$
+C = \frac{1}{2} log_2 \left( 1 + \frac{ S }{ N } \right)
+$$
+
+C
+: capacity (bits per second)
+
+S
+: signal (or power)
+
+N
+: noise
+
+
+### Capacity of a bandlimited Gaussian channel
+
+$$
+C = W log_2 \left( 1 + \frac{ S }{ N } \right)
+$$
+
+W
+: bandwidth (Hz)
+
+
+### Parallel Gaussian channels
+
+
+$$
+C = C_1 + \ldots + C_n
+$$
+
+#### 'Water-filling'
+
+(See example below)
 
 
 
@@ -229,7 +275,7 @@ $$
 "Compute the joint entropy $$H(X ,Y)$$"
 
 $$
-\begin{aligned}
+\begin{split}
 -(
 &
   \tfrac{1}{4} \log_2 \tfrac{1}{4}
@@ -246,7 +292,7 @@ $$
 + \tfrac{1}{12} \log_2 \tfrac{1}{12}
 + \tfrac{1}{12} \log_2 \tfrac{1}{12}
 )
-\end{aligned}
+\end{split}
 $$
 
 
@@ -258,7 +304,7 @@ $$
 
 "Suppose that you want to use these channels in
 parallel to communicate data and you are limited to a
-total input power of $$P=6$$"
+total input power of $$P = 6$$"
 
 "How do you distribute the power among the channels
 in order to maximize the transmission rate?"
@@ -271,3 +317,57 @@ in order to maximize the transmission rate?"
  4      |4    |0.5          |4.5
 
 ("Pour" "water" until all have as equal noise + power as possible.)
+
+
+## 2013 exam
+
+1.  [20 marks]
+
+    1.
+
+2.  
+
+3.  [50 marks] [!]
+
+4.  [15 marks]
+
+    1.  (8 marks) Water-filling, easy
+
+    2.  (7 marks) Capacity of the global channel (made up of parallel Gaussian channels):
+
+        $$
+          \begin{aligned}
+                  C & = C_1 + C_2 + C_3 + C_4
+          \\
+                C_k & = \frac{1}{2} log_2 \left( 1 + \frac{ P_k }{ N_k } \right)
+          \\
+          C_1 = C_2 & = \frac{1}{2} log_2 \left( 1 + \frac{ 3 }{ 1 } \right) = 1
+          \\
+                C_3 & = \frac{1}{2} log_2 \left( 1 + \frac{ 1 }{ 3 } \right) = 0.2075
+          \\
+                C_4 & = 0
+          \\
+                  C & = 1 + 1 + 0.2075 + 0 = 2.2075
+          \end{aligned}
+        $$
+
+5.  [15 marks] "Consider a telephone line which can be approximated
+    by a bandlimited Gaussian channel with bandwidth W =
+    10 kHz.
+    What is the minimum signal-to-noise ratio (expressed
+    in dB) which enables two parties to
+    communicate at the rate of 100 kbits per second?"
+    
+    $$
+    \begin{aligned}
+      & C = W log_2 \left( 1 + \frac{S}{N} \right)
+      \\
+      & 100000 = 10000 log_2 \left( 1 + \frac{S}{N} \right)
+      \\
+      & \therefore log_2 \left( 1 + \frac{S}{N} \right) = 10
+      \\
+      & \therefore \frac{S}{N} + 1 = 2^10
+      \\
+      & 10 log_{10} 1023 = 30.1 dB
+    \end{aligned}
+    $$
