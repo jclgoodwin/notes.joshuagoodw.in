@@ -462,9 +462,66 @@ Response time analysis is both a necessary and a sufficient test -- that is to s
 
 
 
-## Priority ceiling protocols
+## Priority inheritance/ceiling protocols
 
 (Lecture 7)
+
+
+### Priority inversion
+
+A problem.
+
+"A task is suspended waiting for a lower-priority task to complete some required computation" ["blocked"]
+... clearly, something's not right.
+"The priority model is, in some sense, being undermined."
+
+
+### Priority inheritance
+
+A solution.
+
+If task `p` is blocking task `q`, then run `p` with `q`'s priority.
+
+
+### Calulating 'blocking'
+
+A task has `m` critical sections that can lead to it being blocked
+→ the maximum number of times it can be blocked is `m`
+
+Upper bound on task `i`'s blocking time:
+
+$$
+B_i = \sum^K_{k=1} C(k)
+$$
+
+#### Adding 'blocking' to the response time equation
+
+$$
+R_i = C_i + B_i + I_i
+$$
+
+...
+
+
+### Priority ceiling protocols
+
+"A high-priority task can be blocked at most once during its execution by lower-priority tasks"
+
+Prevents:
+*   Deadlocks
+*   Transitive blocking
+
+"Mutual exclusive access to resources is ensured"
+
+##### Original ceiling priority protocol
+
+*   Each task has a static default priority
+*   Each resource has a static ceiling value
+    -   Defines maximum propriety of tasks that use it
+*   Each task has an additional dynamic priority
+    -   This is the maximum of its static priority and any that it blocks 
+
+##### Immediate ceiling priority protocol
 
 
 
@@ -472,6 +529,14 @@ Response time analysis is both a necessary and a sufficient test -- that is to s
 ## Further extending the model
 
 (Lectures 8, 9 and 10)
+
+
+### Release jitter
+
+...
+
+
+### 
 
 
 
