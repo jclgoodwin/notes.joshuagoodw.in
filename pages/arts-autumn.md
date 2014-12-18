@@ -508,21 +508,48 @@ $$
 "A high-priority task can be blocked at most once during its execution by lower-priority tasks"
 
 Prevents:
-*   Deadlocks
-*   Transitive blocking
 
-"Mutual exclusive access to resources is ensured"
+* Deadlocks
+* Transitive blocking
 
-##### Original ceiling priority protocol
+"Mutual[ly] exclusive access to resources is ensured"
 
-*   Each task has a static default priority
-*   Each resource has a static ceiling value
-    -   Defines maximum propriety of tasks that use it
-*   Each task has an additional dynamic priority
-    -   This is the maximum of its static priority and any that it blocks 
+#### Original ceiling priority protocol
 
-##### Immediate ceiling priority protocol
+* Each task has a static default priority
+* Each resource has a static ceiling value
+  - Defines maximum priority of tasks that use it
+* Each task has an additional dynamic priority
+  - This is the maximum of its static priority and **any task that it blocks**
+* **A task can only lock a resource if its dynamic priority is higher than the ceiling value of any currently locked resource (that the task has not locked itself)**
 
+#### Immediate ceiling priority protocol
+
+* Each task has a static default priority
+* Each resource has a static ceiling value
+  - Defines maximum priority of tasks that use it
+* Each task has an additional dynamic priority
+  - This is the maximum of its static priority and **the ceiling values of any resources that it locks**
+
+"A task will only suffer a block at the very beginning of its execution."
+After that, "all the resources it needs must be free".
+For needed resources not to be free, an equal- or higher-priority task must lock them
+-- so the equal- or lower-priority task's execution would be postponed anyway.
+
+_If a lowish-priority task is using a resource that high-priority tasks might want to use,
+give the task a higher priority so it can finish using it as quickly as possible._
+
+#### Comparision
+
+* Both...
+  - have same worst-case behaviour
+* ICPP...
+  - easier to implement, no monitoring of blocking relationships
+  - leads to fewer context switches
+  - more priority movements (upon every resource use)
+* OCPP...
+  - harder to implement, monitoring of blocking relationships
+  - fewer priority movements (only when blocking occurs)
 
 
 
@@ -562,7 +589,7 @@ Needless to say, we'll only scratch the surface here.
 
 ### Measurement
 
-*   Potentially "optimistic" - was the worst-case path measured?
+*   Potentially "optimistic" -- was the worst-case path measured?
 *   Have to select test data
     *   Does test data trigger longest _execution trace_?
 *   Measured all possible execution traces?
@@ -752,9 +779,23 @@ Where, despite low utilisation, there is unschedulability ...
 
 2.  1.  "Explain the function of execution-time servers in real-time systems."
 
-3.  1.  
+3.  1.  priority inversion
+        : where a task is _blocked_ by a lower-priority task -- suspended waiting for the lower-priority task
+        "to complete some required" computation
 
-    2.  
+        priority inheritance
+        : where a task that is _blocking_ a higher-prioirity task is made to inherit [temporarily]
+        the priority of the higher-priority task it is blocking
+
+        immediate priority ceiling inheritance
+        : ...
+
+        Baker's stack resource policy
+        : ...
+
+    2.  1.  Simple priority inheritance:
+
+        2.  Immediate priority ceiling inheritance: 
 
     3.  "The worst-case execution time (WCET) of a task must be determined if the
         temporal behaviour of a system is to be determined. What are the two main methods
