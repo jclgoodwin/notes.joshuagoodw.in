@@ -460,6 +460,37 @@ Response time analysis is both a necessary and a sufficient test -- that is to s
 (Lecture 6)
 
 
+### Execution-time servers
+
+"A virtual resource layer between the set of applications and the processor[(s)] they execute on"
+... "both guarantees a certain level of service and ensures that no more resource is allocated than is implied by the 'service contract'".
+
+The server sort of _serves_ what are called _client tasks_.
+
+A server has a budget (capacity) which can be replenished according to what kind of server it is.
+
+#### Periodic server
+
+* Budget is replenished according to replenishment period
+* "Following replenishment, client tasks can execute until either the budget is exhausted,
+  or there are no longer any runnable tasks"
+  - ...at which point the server is _suspended_ until replenishment period comes around
+
+Behave like periodic tasks.
+
+#### Deferrable server
+
+As periodic, but the server is not suspended just because there are no runnable tasks
+(client will always be serviced iff there is some budget available).
+
+Behave like periodic tasks too.
+
+#### Sporadic server
+
+Budget "remains indefinitely", replenishment time is relative to arrival time of a client
+(client arrives at `t`, replenishment happens at `t + replenishment period`).
+
+Worst-case behaviour is when
 
 
 ## Priority inheritance/ceiling protocols
@@ -559,10 +590,6 @@ give the task a higher priority so it can finish using it as quickly as possible
 
 (Lectures 8, 9 and 10)
 
-"An extendible task model for FPS" (Burns and Wellings)
-
-The foils are weak but the book is willing.
-
 
 ### Release jitter
 
@@ -571,29 +598,22 @@ The foils are weak but the book is willing.
 
 ### Execution-time servers
 
-"A virtual resource layer between the set of applications and the processor[(s)] they execute on"
-... "both guarantees a certain level of service and ensures that no more resource is allocated than is implied by the 'service contract'".
+([Recall what they are -- see 'extending the model'](#extending-the-task-model))
 
-The server sort of _serves_ what are called _client tasks_.
+Periodic and deferrable servers behave like periodic tasks.
 
-A server has a budget (capacity) which can be replenished according to what kind of server it is.
+Sporadic servers behave worst when
 
-#### Periodic server
 
-* Budget is replenished according to replenishment period
-* "Following replenishment, client tasks can execute until either the budget is exhausted,
-  or there are no longer any runnable tasks"
-  - ...at which point the server is _suspended_ until replenishment period comes around
+### The fully extended task model
 
-#### Deferrable server
+We end up with...
 
-As periodic, but the server is not suspended just because there are no runnable tasks
-(client will always be serviced iff there is some budget available).
+$$
+R_i = CS^1 + C_i + B_i + \sum_{j \in hp(i)} \left\lceil \frac{R_i}{T_j} \right\rceil \left( CS^1 + CS^2 + C_j \right)
+$$
 
-#### Sporadic server
-
-Budget "remains indefinitely", replenishment time is relative to arrival time of a client
-(client arrives at `t`, replenishment happens at `t + replenishment period`).
+Response time for task i = cost of switching to i + computation time for i + blocking + interference, including the costs of further switching to and from task i
 
 
 
@@ -645,6 +665,7 @@ Different to single-processor systems, so analysis is different.
 
 *   Global versus partitioned scheduling
 
+Partitioned: tasks are statically assigned to partitions before runtime.
 
 ### Dhall effect
 
