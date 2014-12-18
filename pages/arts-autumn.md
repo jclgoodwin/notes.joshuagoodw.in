@@ -543,6 +543,7 @@ give the task a higher priority so it can finish using it as quickly as possible
 
 * Both...
   - have same worst-case behaviour
+  - do enforce mutual exclusion, prevent deadlocks and transitive blocking...
 * ICPP...
   - easier to implement, no monitoring of blocking relationships
   - leads to fewer context switches
@@ -553,9 +554,14 @@ give the task a higher priority so it can finish using it as quickly as possible
 
 
 
+
 ## Further extending the model
 
 (Lectures 8, 9 and 10)
+
+"An extendible task model for FPS" (Burns and Wellings)
+
+The foils are weak but the book is willing.
 
 
 ### Release jitter
@@ -563,7 +569,31 @@ give the task a higher priority so it can finish using it as quickly as possible
 ...
 
 
-### 
+### Execution-time servers
+
+"A virtual resource layer between the set of applications and the processor[(s)] they execute on"
+... "both guarantees a certain level of service and ensures that no more resource is allocated than is implied by the 'service contract'".
+
+The server sort of _serves_ what are called _client tasks_.
+
+A server has a budget (capacity) which can be replenished according to what kind of server it is.
+
+#### Periodic server
+
+* Budget is replenished according to replenishment period
+* "Following replenishment, client tasks can execute until either the budget is exhausted,
+  or there are no longer any runnable tasks"
+  - ...at which point the server is _suspended_ until replenishment period comes around
+
+#### Deferrable server
+
+As periodic, but the server is not suspended just because there are no runnable tasks
+(client will always be serviced iff there is some budget available).
+
+#### Sporadic server
+
+Budget "remains indefinitely", replenishment time is relative to arrival time of a client
+(client arrives at `t`, replenishment happens at `t + replenishment period`).
 
 
 
@@ -618,7 +648,7 @@ Different to single-processor systems, so analysis is different.
 
 ### Dhall effect
 
-Where, despite low utilisation, there is unschedulability ...
+A problem with global scheduling. Where, despite low utilisation, there is unschedulability ...
 
 ### TkC priority ordering
 
@@ -778,6 +808,8 @@ Where, despite low utilisation, there is unschedulability ...
         (T2 given the lowest priority, then T1 and T3 prioritised rate-monotonically?)
 
 2.  1.  "Explain the function of execution-time servers in real-time systems."
+
+        Execution-time
 
 3.  1.  priority inversion
         : where a task is _blocked_ by a lower-priority task -- suspended waiting for the lower-priority task
