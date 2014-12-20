@@ -678,6 +678,8 @@ A problem with global scheduling. Where, despite low utilisation, there is unsch
 
 ## 2014 exam
 
+(Answer question 1, and 2 or 3. 50 marks each, for a total of 100.)
+
 1.  1.  "Describe the three scheduling schemes: EDF (Earliest Deadline First),
         FP (Fixed Priority) and LL (Least Laxity).
         For each give the utilisation bound for schedulability of a task set
@@ -830,18 +832,33 @@ A problem with global scheduling. Where, despite low utilisation, there is unsch
 
 2.  1.  "Explain the function of execution-time servers in real-time systems."
 
-        Execution-time
+        (Not sure exactly what is being asked for -- _function_ different to  _purpose_?)
+
+        * Virtual resource layer between applications and processor(s)
+        * Have a capacity budget which is used by client tasks (one at a time) and replenished according to replenishment period
+        * Guarantee a certain level of service, and ensure no more resource is allocated than should be...
+
+    2.  "Compare and contrast the _periodic_ server and the _deferrable_ server."
+
+        Both have a budget which is replenished according to the replenishment period.
+
+        Tasks execute following replenishment, until the budget "is exhausted".
+
+        With the periodic server, the server is suspended when there are no runnable tasks or the budget runs out, until the next replenishment.
+        The deferrable server is only suspended if the budget runs out -- if there is budget available, client tasks can be served.
 
 3.  1.  priority inversion
         : where a task is _blocked_ by a lower-priority task -- suspended waiting for the lower-priority task
         "to complete some required" computation
 
         priority inheritance
-        : where a task that is _blocking_ a higher-prioirity task is made to inherit [temporarily]
+        : where a task that is _blocking_ a higher-priority task is made to inherit [temporarily]
         the priority of the higher-priority task it is blocking
 
         immediate priority ceiling inheritance
-        : ...
+        : A protocol where resources have a tasks have a static priority ceiling (tasks of priority > this value cannot use the resource) and
+        tasks [can inherit this value if it is higher than their static default priority]
+        [priorities inherited from resources]
 
         Baker's stack resource policy
         : ...
