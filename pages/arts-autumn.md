@@ -86,6 +86,18 @@ Worst-case execution time (WCET), C
 : Obvious, right?
 
 
+### Types of deadline
+
+Implicit
+: Where D = T
+
+Constrained
+: Where D ≤ T
+
+Unconstrained
+: ...
+
+
 ### Event loop
 
 For event-triggered activities.
