@@ -688,6 +688,57 @@ A problem with global scheduling. Where, despite low utilisation, there is unsch
 
 
 
+## Mixed criticality systems
+
+(Lecture 14)
+
+### Background
+
+"Increasing tendency to host more than one system on the same platform..."
+
+
+### Modifying the task model
+
+L is the integrity level of a task.
+
+$$
+L_X \gt L_Y \implies C(L_X) \gt C(L_Y)
+$$
+
+(Higher integrity tasks assumed to have longer WCET)
+
+
+### Schedulability test method 1 (Vestal, 2007)
+
+Response time of _some task_ with criticality C  
+= WCET of _that task_  
++ sum of what each higher-criticality task's WCET would be if it had that (low) criticality
+
+$$
+R_i = C_i(L_i) + \sum _{j \in hp(i)} \left\lceil \frac{R_i}{T_j} \right\rceil C_j(L_i)
+$$
+
+#### Example (exercise 11)
+
+Task 3 has the highest criticality (H) and its C(H) is C
+
+$$
+\begin{aligned}
+  R_{3} &= 1 + \sum _{\j \in hp(i)} \left\lceil \frac{R_1}{T_j} \right\rceil C_j(L_1)
+\\
+  R_{3} &= 1
+\end{aligned}
+$$
+
+It meets its deadline (30).
+
+Task 2 has criticality M
+
+
+### Schedulability test method 2 (Vestal, 2007)
+
+
+
 ## 2014 exam
 
 (Answer question 1, and 2 or 3. 50 marks each, for a total of 100.)
@@ -910,5 +961,3 @@ A problem with global scheduling. Where, despite low utilisation, there is unsch
         2: no interference, but cache misses "to be expected"...
 
 ## 2013 exam
-
-1.
