@@ -675,13 +675,37 @@ A fool's errand? May be useful for rough estimates, though.
 
 Different to single-processor systems, so analysis is different.
 
-*   Global versus partitioned scheduling
 
-Partitioned: tasks are statically assigned to partitions before runtime.
+###  Global versus partitioned placement
 
-### Dhall effect
+...where _placement_ is the mapping of tasks to processors.
 
-A problem with global scheduling. Where, despite low utilisation, there is unschedulability ...
+Partitioned
+: tasks are statically assigned to partitions before runtime.
+
+Global
+: tasks dynamically allocated as they become runnable, can even move between processors during advantages
+
+The global scheme requires runtime support, but it has other disadvantages.
+
+The **Dhall effect** is a problem with global scheduling. Where, despite low utilisation, there is unschedulability... for example, see this task-set:
+
+Task | T  | D  | C
+-----|----|----|--
+  a  | 10 | 10 | 5
+  b  | 10 | 10 | 5
+  c  | 12 | 12 | 8
+
+Assuming a two-processor system, global scheduling would (typically) allocate _a_ and _b_ each to different processors, forcing _c_ to then miss its deadline despite the low (< 2) utilisiation. Partitioned scheduling would have the foresight to allocate a and b to the same processor, and c to the other.
+
+Of course, for other kinds of task-set one can imagine how partitioned scheduling is worse:
+
+Task | T  | D  | C
+-----|----|----|--
+  a  | 10 | 10 | 5
+  b  | 10 | 10 | 5
+  c  | 12 | 12 | 8
+
 
 ### TkC priority ordering
 
