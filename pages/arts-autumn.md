@@ -131,7 +131,7 @@ end loop
 
 ### Sporadic events
 
-Where the event source has a **minimum arrival interval**.
+Where the event source has a **minimum arrival interval**. Require D < T ...
 
 
 ### Aperiodic events
@@ -473,6 +473,16 @@ Response time analysis is both a necessary and a sufficient test -- that is to s
 (Lecture 6)
 
 
+### Sporadic tasks
+
+("Sporadic" seems to have an unclearly-understood meaning in real life ... like "greedy", etc.)
+
+"Sporadics" characterised by a minimum _inter-arrival_ time, and D < T
+
+An annoying thing about sporadics is that their worst-case execution time figures can be higher than their in-practice average execution time
+-- events arrive in bursts, and then at other time 
+
+
 ### Execution-time servers
 
 "A virtual resource layer between the set of applications and the processor[(s)] they execute on"
@@ -527,7 +537,7 @@ A solution.
 If task `p` is blocking task `q`, then run `p` with `q`'s priority.
 
 
-### Calulating 'blocking'
+### Calculating 'blocking'
 
 A task has `m` critical sections that can lead to it being blocked
 → the maximum number of times it can be blocked is `m`
@@ -583,7 +593,7 @@ For needed resources not to be free, an equal- or higher-priority task must lock
 _If a lowish-priority task is using a resource that high-priority tasks might want to use,
 give the task a higher priority so it can finish using it as quickly as possible._
 
-#### Comparision
+#### Comparison
 
 * Both...
   - have same worst-case behaviour
@@ -697,9 +707,9 @@ Partitioned
 : tasks are statically assigned to partitions before runtime.
 
 Global
-: tasks dynamically allocated as they become runnable, can even move between processors during advantages
+: tasks dynamically allocated as they become runnable, can even move between processors during execution
 
-The global scheme requires runtime support, but it has other disadvantages.
+The global scheme requires runtime support, but also has other disadvantages
 
 The **Dhall effect** is a problem with global scheduling where, despite low utilisation, there is an appearance of unschedulability ... for example, see this task-set:
 
@@ -709,7 +719,7 @@ Task | T  | D  | C
   b  | 10 | 10 | 5
   c  | 12 | 12 | 8
 
-On a two-processor system, global scheduling would (assuming earliest-deadline-first, or fixed priorities with a typical rate- or deadline-monotonic priority assignment scheme) allocate _a_ and _b_ each to different processors, forcing _c_ to then miss its deadline despite the low (< 2) utilisiation. Partitioned scheduling would have the foresight to allocate a and b to the same processor, and c to the other.
+On a two-processor system, global scheduling would (assuming earliest-deadline-first, or fixed priorities with a typical rate- or deadline-monotonic priority assignment scheme) allocate _a_ and _b_ each to different processors, forcing _c_ to then miss its deadline despite the low (< 2) utilisation. Partitioned scheduling would have the foresight to allocate a and b to the same processor, and c to the other.
 
 Of course, for other kinds of task-set one can imagine how partitioned scheduling is worse:
 
@@ -719,11 +729,18 @@ Task | T  | D  | C
   e  | 10 | 10 | 9
   f  | 10 | 10 | 2
 
-It is impossible to schedule this task-set on two processors with any partitioned scheme -- one of the tasks must move between processors during execution. This can be done with a 
+It is impossible to schedule this task-set on two processors with any partitioned scheme
+-- one of the tasks must move between processors during execution.
+This can be solved with a global scheme.
 
-(In both cases, the third task could be manually split in two, but doesn't count -- it would effectively give us a different task-set, so is sort of cheating; and as we've seen with cyclic executives, this kind of manual fiddling is untenable.)
+(In both cases, the third task could be manually split in two, but doesn't count
+-- it would effectively give us a different task-set, so is sort of cheating;
+and as we've seen with cyclic executives, this kind of manual fiddling is untenable.)
+
 
 ### TkC priority ordering
+
+
 
 
 
