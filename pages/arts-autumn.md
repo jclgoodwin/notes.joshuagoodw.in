@@ -249,7 +249,7 @@ More adaptive than static priorities or simple deadlines.
 
 What happens when a higher-priority task is released while a lower-priority one is executing?
 
-* In a **preemptive scheme**, the higher-priority task is switched to immediately
+* In a **preemptive scheme**, the higher-priority task is switched to immediately (upon release)
   - Preferred because higher-priority tasks can be more reactive
 * In a **non-preemptive scheme**, the lower-priority task is allowed to complete first 
 * **Cooperative dispatching** (or **deferred preemption**) is a "halfway house"...
@@ -260,10 +260,10 @@ Various scheduling schemes can have preemptive and non-preemptive variants.
 ### Necessary and sufficient tests
 
 Necessary
-: Where a test failure means deadlines will be missed (a pass is necessary)
+: Where a test failure means deadlines will be missed (is sufficient evidence of unschedulability!)
 
 Sufficient
-: Where a test pass means deadlines will be met (is sufficient evidence)
+: Where a test pass means deadlines will be met (no further evidence needed)
 
 Exact
 : Where a test is both necessary and sufficient
@@ -463,6 +463,7 @@ Note that for the tutorial question, most of this working-out was not required
 -- it was quickly obvious that the response time of S (8 ms) exceeds its deadline (7 ms)!
 
 Response time analysis is both a necessary and a sufficient test -- that is to say, it is an exact test.
+(Although, if there were some overheads unaccounted for, maybe it wouldn't be sufficient...)
 
 
 
@@ -595,6 +596,18 @@ give the task a higher priority so it can finish using it as quickly as possible
   - harder to implement, monitoring of blocking relationships
   - fewer priority movements (only when blocking occurs)
 
+#### Baker's stack resource policy
+
+"Probably the best scheme for EDF"
+
+Similar to immediate ceiling priority inheritance.
+
+Each task [before runtime?] assigned a **preemption level**; the shorter the relative deadline, the higher the preemption level.
+At run-time, resources given ceiling values (maximum preemption values of tasks that can use them).
+Released tasks can preempt executing tasks _iff_ they have shorter absolute deadlines, _and_ their preemption level > highest ceiling of any currently locked resources.
+
+Identical results to those of ICPP.
+
 
 
 
@@ -688,24 +701,27 @@ Global
 
 The global scheme requires runtime support, but it has other disadvantages.
 
-The **Dhall effect** is a problem with global scheduling. Where, despite low utilisation, there is unschedulability... for example, see this task-set:
+The **Dhall effect** is a problem with global scheduling where, despite low utilisation, there is an appearance of unschedulability ... for example, see this task-set:
 
 Task | T  | D  | C
------|----|----|--
+-----|----|----|---
   a  | 10 | 10 | 5
   b  | 10 | 10 | 5
   c  | 12 | 12 | 8
 
-Assuming a two-processor system, global scheduling would (typically) allocate _a_ and _b_ each to different processors, forcing _c_ to then miss its deadline despite the low (< 2) utilisiation. Partitioned scheduling would have the foresight to allocate a and b to the same processor, and c to the other.
+On a two-processor system, global scheduling would (assuming earliest-deadline-first, or fixed priorities with a typical rate- or deadline-monotonic priority assignment scheme) allocate _a_ and _b_ each to different processors, forcing _c_ to then miss its deadline despite the low (< 2) utilisiation. Partitioned scheduling would have the foresight to allocate a and b to the same processor, and c to the other.
 
 Of course, for other kinds of task-set one can imagine how partitioned scheduling is worse:
 
 Task | T  | D  | C
------|----|----|--
-  a  | 10 | 10 | 5
-  b  | 10 | 10 | 5
-  c  | 12 | 12 | 8
+-----|----|----|---
+  d  | 10 | 10 | 9
+  e  | 10 | 10 | 9
+  f  | 10 | 10 | 2
 
+It is impossible to schedule this task-set on two processors with any partitioned scheme -- one of the tasks must move between processors during execution. This can be done with a 
+
+(In both cases, the third task could be manually split in two, but doesn't count -- it would effectively give us a different task-set, so is sort of cheating; and as we've seen with cyclic executives, this kind of manual fiddling is untenable.)
 
 ### TkC priority ordering
 
@@ -948,7 +964,10 @@ Task 2 has criticality M
         [priorities inherited from resources]
 
         Baker's stack resource policy
-        : ...
+        : ("Probably the best scheme for EDF") Similar to immediate ceiling priority inheritance.
+        Each task [before runtime?] assigned a **preemption level**; the shorter the relative deadline, the higher the preemption level.
+        At run-time, resources given ceiling values (maximum preemption values of tasks that can use them).
+        Released tasks can preempt executing tasks _iff_ they have shorter absolute deadlines, _and_ their preemption level > highest ceiling of any currently locked resources.
 
     2.  1.  Simple priority inheritance:
 
