@@ -648,7 +648,16 @@ $$
 R_i = CS^1 + C_i + B_i + \sum_{j \in hp(i)} \left\lceil \frac{R_i}{T_j} \right\rceil \left( CS^1 + CS^2 + C_j \right)
 $$
 
-Response time for task i = cost of switching to i + computation time for i + blocking + interference, including the costs of further switching to and from task i
+Response time for task i
+= cost of switching to i
++ computation time for i
++ blocking
++ interference, including the costs of further switching to and from task i
+
+
+###
+
+
 
 
 
@@ -765,9 +774,11 @@ But one handy heuristic is largest "density" ($$\frac{C}{D}$$) first.
 
 ### The semi-partitioned (task-splitting) approach 
 
+Mostly partitioned, but allow a small number (= number of processors) of tasks to migrate during runtime
+
 * A compromise, obviously
 * Variations for both earliest-deadline-first and fixed-priority ordering
-* Maxmum task migrations = M − 1
+* Maximum task migrations = M − 1
 
 
 
