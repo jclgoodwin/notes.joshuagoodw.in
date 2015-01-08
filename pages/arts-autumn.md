@@ -719,7 +719,12 @@ Task | T  | D  | C
   b  | 10 | 10 | 5
   c  | 12 | 12 | 8
 
-On a two-processor system, global scheduling would (assuming earliest-deadline-first, or fixed priorities with a typical rate- or deadline-monotonic priority assignment scheme) allocate _a_ and _b_ each to different processors, forcing _c_ to then miss its deadline despite the low (< 2) utilisation. Partitioned scheduling would have the foresight to allocate a and b to the same processor, and c to the other.
+On a two-processor system,
+global scheduling would
+(assuming earliest-deadline-first, or fixed priorities with a typical rate- or deadline-monotonic priority assignment scheme)
+allocate _a_ and _b_ each to different processors,
+forcing _c_ to then miss its deadline despite the low (< 2) utilisation.
+Partitioned scheduling would have the foresight to allocate a and b to the same processor, and c to the other.
 
 Of course, for other kinds of task-set one can imagine how partitioned scheduling is worse:
 
@@ -740,8 +745,29 @@ and as we've seen with cyclic executives, this kind of manual fiddling is untena
 
 ### TkC priority ordering
 
+A way to use global scheduling without the problems of earliest-deadline-first/deadline-monotonic priority orderings.
+
+$$
+T - \left( \frac{ M - 1 + \sqrt{ 5M^2 - 6M + 1 } }{ 2M } \right) \times C
+$$
+
+(k represents the whole pile of stuff in the brackets. T is replaced by D if it is smaller.)
 
 
+### Fight!
+
+In general, perhaps global scheduling needs more research.
+Or perhaps the overheads (cost of task migration, cost of shared run-queue) are insurmountable.
+
+Partitioning is hard (allocation of tasks to partitions is an NP-hard problem, reducible to bin-packing).
+But one handy heuristic is largest "density" ($$\frac{C}{D}$$) first.
+
+
+### The semi-partitioned (task-splitting) approach 
+
+* A compromise, obviously
+* Variations for both earliest-deadline-first and fixed-priority ordering
+* Maxmum task migrations = M − 1
 
 
 
