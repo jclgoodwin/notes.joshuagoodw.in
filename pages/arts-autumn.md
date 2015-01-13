@@ -131,7 +131,7 @@ end loop
 
 ### Sporadic events
 
-Where the event source has a **minimum arrival interval**.
+Where the event source has a **minimum arrival interval**. Require D < T ...
 
 
 ### Aperiodic events
@@ -249,7 +249,7 @@ More adaptive than static priorities or simple deadlines.
 
 What happens when a higher-priority task is released while a lower-priority one is executing?
 
-* In a **preemptive scheme**, the higher-priority task is switched to immediately
+* In a **preemptive scheme**, the higher-priority task is switched to immediately (upon release)
   - Preferred because higher-priority tasks can be more reactive
 * In a **non-preemptive scheme**, the lower-priority task is allowed to complete first 
 * **Cooperative dispatching** (or **deferred preemption**) is a "halfway house"...
@@ -260,10 +260,10 @@ Various scheduling schemes can have preemptive and non-preemptive variants.
 ### Necessary and sufficient tests
 
 Necessary
-: Where a test failure means deadlines will be missed (a pass is necessary)
+: Where a test failure means deadlines will be missed (is sufficient evidence of unschedulability!)
 
 Sufficient
-: Where a test pass means deadlines will be met (is sufficient evidence)
+: Where a test pass means deadlines will be met (no further evidence needed)
 
 Exact
 : Where a test is both necessary and sufficient
@@ -463,6 +463,7 @@ Note that for the tutorial question, most of this working-out was not required
 -- it was quickly obvious that the response time of S (8 ms) exceeds its deadline (7 ms)!
 
 Response time analysis is both a necessary and a sufficient test -- that is to say, it is an exact test.
+(Although, if there were some overheads unaccounted for, maybe it wouldn't be sufficient...)
 
 
 
@@ -470,6 +471,16 @@ Response time analysis is both a necessary and a sufficient test -- that is to s
 ## Extending the task model
 
 (Lecture 6)
+
+
+### Sporadic tasks
+
+("Sporadic" seems to have an unclearly-understood meaning in real life ... like "greedy", etc.)
+
+"Sporadics" characterised by a minimum _inter-arrival_ time, and D < T
+
+An annoying thing about sporadics is that their worst-case execution time figures can be higher than their in-practice average execution time
+-- events arrive in bursts, and then at other time 
 
 
 ### Execution-time servers
@@ -526,7 +537,7 @@ A solution.
 If task `p` is blocking task `q`, then run `p` with `q`'s priority.
 
 
-### Calulating 'blocking'
+### Calculating 'blocking'
 
 A task has `m` critical sections that can lead to it being blocked
 → the maximum number of times it can be blocked is `m`
@@ -582,7 +593,7 @@ For needed resources not to be free, an equal- or higher-priority task must lock
 _If a lowish-priority task is using a resource that high-priority tasks might want to use,
 give the task a higher priority so it can finish using it as quickly as possible._
 
-#### Comparision
+#### Comparison
 
 * Both...
   - have same worst-case behaviour
@@ -594,6 +605,18 @@ give the task a higher priority so it can finish using it as quickly as possible
 * OCPP...
   - harder to implement, monitoring of blocking relationships
   - fewer priority movements (only when blocking occurs)
+
+#### Baker's stack resource policy
+
+"Probably the best scheme for EDF"
+
+Similar to immediate ceiling priority inheritance.
+
+Each task [before runtime?] assigned a **preemption level**; the shorter the relative deadline, the higher the preemption level.
+At run-time, resources given ceiling values (maximum preemption values of tasks that can use them).
+Released tasks can preempt executing tasks _iff_ they have shorter absolute deadlines, _and_ their preemption level > highest ceiling of any currently locked resources.
+
+Identical results to those of ICPP.
 
 
 
@@ -672,7 +695,16 @@ $$
 R_i = CS^1 + C_i + B_i + \sum_{j \in hp(i)} \left\lceil \frac{R_i}{T_j} \right\rceil \left( CS^1 + CS^2 + C_j \right)
 $$
 
-Response time for task i = cost of switching to i + computation time for i + blocking + interference, including the costs of further switching to and from task i
+Response time for task i
+= cost of switching to i
++ computation time for i
++ blocking
++ interference, including the costs of further switching to and from task i
+
+
+###
+
+
 
 
 
@@ -722,16 +754,129 @@ A fool's errand? May be useful for rough estimates, though.
 
 Different to single-processor systems, so analysis is different.
 
-*   Global versus partitioned scheduling
 
-Partitioned: tasks are statically assigned to partitions before runtime.
+###  Global versus partitioned placement
 
-### Dhall effect
+...where _placement_ is the mapping of tasks to processors.
 
-A problem with global scheduling. Where, despite low utilisation, there is unschedulability ...
+Partitioned
+: tasks are statically assigned to partitions before runtime.
+
+Global
+: tasks dynamically allocated as they become runnable, can even move between processors during execution
+
+The global scheme requires runtime support, but also has other disadvantages
+
+The **Dhall effect** is a problem with global scheduling where, despite low utilisation, there is an appearance of unschedulability ... for example, see this task-set:
+
+Task | T  | D  | C
+-----|----|----|---
+  a  | 10 | 10 | 5
+  b  | 10 | 10 | 5
+  c  | 12 | 12 | 8
+
+On a two-processor system,
+global scheduling would
+(assuming earliest-deadline-first, or fixed priorities with a typical rate- or deadline-monotonic priority assignment scheme)
+allocate _a_ and _b_ each to different processors,
+forcing _c_ to then miss its deadline despite the low (< 2) utilisation.
+Partitioned scheduling would have the foresight to allocate a and b to the same processor, and c to the other.
+
+Of course, for other kinds of task-set one can imagine how partitioned scheduling is worse:
+
+Task | T  | D  | C
+-----|----|----|---
+  d  | 10 | 10 | 9
+  e  | 10 | 10 | 9
+  f  | 10 | 10 | 2
+
+It is impossible to schedule this task-set on two processors with any partitioned scheme
+-- one of the tasks must move between processors during execution.
+This can be solved with a global scheme.
+
+(In both cases, the third task could be manually split in two, but doesn't count
+-- it would effectively give us a different task-set, so is sort of cheating;
+and as we've seen with cyclic executives, this kind of manual fiddling is untenable.)
+
 
 ### TkC priority ordering
 
+A way to use global scheduling without the problems of earliest-deadline-first/deadline-monotonic priority orderings.
+
+$$
+T - \left( \frac{ M - 1 + \sqrt{ 5M^2 - 6M + 1 } }{ 2M } \right) \times C
+$$
+
+(k represents the whole pile of stuff in the brackets. T is replaced by D if it is smaller.)
+
+
+### Fight!
+
+In general, perhaps global scheduling needs more research.
+Or perhaps the overheads (cost of task migration, cost of shared run-queue) are insurmountable.
+
+Partitioning is hard (allocation of tasks to partitions is an NP-hard problem, reducible to bin-packing).
+But one handy heuristic is largest "density" ($$\frac{C}{D}$$) first.
+
+
+### The semi-partitioned (task-splitting) approach 
+
+Mostly partitioned, but allow a small number (= number of processors) of tasks to migrate during runtime
+
+* A compromise, obviously
+* Variations for both earliest-deadline-first and fixed-priority ordering
+* Maximum task migrations = M − 1
+
+
+
+## Mixed criticality systems
+
+(Lecture 14)
+
+### Background
+
+"Increasing tendency to host more than one system on the same platform..."
+
+
+### Modifying the task model
+
+L is the integrity level of a task.
+
+$$
+L_X \gt L_Y \implies C(L_X) \gt C(L_Y)
+$$
+
+(Higher integrity tasks assumed to have longer WCET)
+
+
+### Schedulability test method 1 (Vestal, 2007)
+
+Response time of _some task_ with criticality C  
+= WCET of _that task_  
++ sum of what each higher-criticality task's WCET would be if it had that (low) criticality
+
+$$
+R_i = C_i(L_i) + \sum _{j \in hp(i)} \left\lceil \frac{R_i}{T_j} \right\rceil C_j(L_i)
+$$
+
+#### Example (exercise 11)
+
+Task 3 has the highest criticality (H) and its C(H) is C
+
+$$
+\begin{aligned}
+  R_{3} &= 1 + \sum _{\j \in hp(i)} \left\lceil \frac{R_1}{T_j} \right\rceil C_j(L_1)
+\\
+  R_{3} &= 1
+\end{aligned}
+$$
+
+It meets its deadline (30).
+
+Task 2 has criticality M
+
+
+### Schedulability test method 2 (Vestal, 2007)
 
 
 
@@ -920,7 +1065,10 @@ A problem with global scheduling. Where, despite low utilisation, there is unsch
         [priorities inherited from resources]
 
         Baker's stack resource policy
-        : ...
+        : ("Probably the best scheme for EDF") Similar to immediate ceiling priority inheritance.
+        Each task [before runtime?] assigned a **preemption level**; the shorter the relative deadline, the higher the preemption level.
+        At run-time, resources given ceiling values (maximum preemption values of tasks that can use them).
+        Released tasks can preempt executing tasks _iff_ they have shorter absolute deadlines, _and_ their preemption level > highest ceiling of any currently locked resources.
 
     2.  1.  Simple priority inheritance:
 
@@ -957,5 +1105,3 @@ A problem with global scheduling. Where, despite low utilisation, there is unsch
         2: no interference, but cache misses "to be expected"...
 
 ## 2013 exam
-
-1.

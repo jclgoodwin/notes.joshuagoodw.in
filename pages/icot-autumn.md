@@ -184,7 +184,7 @@ H(Y)-H(Y|X)
 \end{split}
 $$
 
-What mutual information is is the sort of _intersection_ between the information contentses of $$X$$ and $$U$$.
+What mutual information is is the sort of _intersection_ between the information contentses of $$X$$ and $$Y$$.
 
 In a communication channel, mutual information, "which corresponds to a difference
 of entropies, quantifies the information which is transmitted by Alice and
@@ -210,7 +210,7 @@ $$
 
 (Notes largely on paper...)
 
-### Capactity
+### Capacity
 
 $$
 C = \frac{1}{2} log_2 \left( 1 + \frac{ S }{ N } \right)
