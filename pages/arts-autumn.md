@@ -605,7 +605,15 @@ give the task a higher priority so it can finish using it as quickly as possible
 
 ### Release jitter
 
-...
+Where arrival time ≠ release time.
+
+Can apply to periodics and sporadics.
+
+For a sporadic, if response time is to be measured relative to actual release time:
+
+$$
+R_i = C_i + B_i + \sum_{j \in hp(i)} \left\lceil \frac{R_i + J_j}{T_j} \right\rceil C_j
+$$
 
 
 ### Execution-time servers
@@ -614,7 +622,46 @@ give the task a higher priority so it can finish using it as quickly as possible
 
 Periodic and deferrable servers behave like periodic tasks.
 
-Sporadic servers behave worst when
+
+
+### Cooperative scheduling
+
+### Priority assignment -- Audsley
+
+> If task p is assigned the lowest priority and is
+> feasible then, if a feasible priority ordering exists
+> for the complete task set, an ordering exists with
+> task p assigned the lowest priority
+
+Start with, say, deadline monotonic priority assignment (optimal); then introduce a more fancy concept like "importance".
+
+
+### Not enough levels of priority
+
+> You eventually learn that true priorities are like arms;
+> if you think you have more than a couple,
+> you're either lying or crazy.
+
+(Merlin Mann. Sadly an irrelevant distraction here.)
+
+If tasks are forced to share a priority, expect them to interfere with each other.
+
+
+### 'Power-aware' systems
+
+Run the processor at "the lowest speed commensurate with meeting all deadlines"
+
+
+### Overheads
+
+(We can't pretend our systems exist in a perfect vacuum like in GCSE Physics or something.)
+
+For fixed-priority scheduling (can imagine more overheads associated with dynamic prirorities, of course), these are the main overheads:
+
+* Context switches
+* Interrupts (with sporadic task releases)
+* Real-time clock overheads (regarding "clock interruptss")
+
 
 
 ### The fully extended task model
