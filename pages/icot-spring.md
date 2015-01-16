@@ -38,6 +38,33 @@ Prefix code
 
 Obviously, a codeword $$c$$ is a prefix of another $$d$$ if a binary string $$t$$ exists such that $$ct = d$$.
 
+There are visual ways of thinking of prefix codes:
+
+1.  Using binary trees:
+
+                 0                   1
+              /    \             /      \
+           00        01        10        11
+          /  \      /  \      /  \      /  \
+        000  001  010  011  100  101  110  111
+
+    A code is a prefix code if no chosen codewords are descendants of each other. So this is a prefix code (codewords in `[]`):
+
+                [0]                  1
+              /    \             /      \
+           00        01       [10]       11
+          /  \      /  \      /  \      /  \
+        000  001  010  011  100  101 [110][111]
+
+    This is not a prefix code, although it is still uniquely decodeble:
+
+                [0]                  1
+              /    \             /      \
+           00       [01]       10        11
+          /  \      /  \      /  \      /  \
+        000  001  010 [011] 100  101  110  111
+
+2.  There is an unhelpful "supermarket" analogy.
 
 ## Lecture 2 -- Kraft inequality
 
