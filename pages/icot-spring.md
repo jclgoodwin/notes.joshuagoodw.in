@@ -69,3 +69,33 @@ There are visual ways of thinking of prefix codes:
 ## Lecture 2 -- Kraft inequality
 
 The disparity in earnings between various people involved in making industrial cheese? Ha ha ha, no.
+
+## Lecture 3 -- Shannon codes
+
+(and the source coding theorem)
+
+One suddenly sees the supermarket analogy in a more flattering light when one comes to start computing Shannon codes (one way of generating prefix codes). Perhaps it resembles <cite>Dale Wind-Sock's Super-Market Sweep</cite> too.
+
+## Lecture 4 -- Fano codes and Huffman codes
+
+Here we see two gradually more optimal prefix codes.
+
+## Lecture 5 -- Universal data compression
+
+Symbol codes can only get us so far.
+
+## Lecture 6
+
+## Lecture 7 -- Introduction to error correction
+
+### Parity
+
+A parity bit ... modular addition
+
+## Lecture 8 -- Repetition codes 
+
+## Lecture 12 -- Linear codes: Graph representation and general bounds
+
+(My mate General Bounds from the army, eh?)
+
+
