@@ -182,12 +182,13 @@ table {
   border: 1px solid $pale;
   border-collapse: collapse;
   border-width: 1px 1px 0 0;
+  margin: 16px auto;
 
   th,
   td {
     border: 1px solid $pale;
     border-width: 0 0 1px 1px;
-    padding: 0 5px;
+    padding: 0 10px;
     text-align: center;
   }
 }

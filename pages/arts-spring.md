@@ -11,7 +11,7 @@ fulltitle: Analysable Real-Time Systems
 
 Mostly just remembering things from the previous term.
 
-One speck of interest: one feature/property of a real-time system that I probably wouldn't think of immediately is support for aritmetic.
+One speck of interest: one feature/property of a real-time system that I probably wouldn't think of immediately is support for arithmetic.
 
 
 ## 12. Asynchronous transfer of control
@@ -28,4 +28,6 @@ This is a clever fragment that sort of gives `Expensive_Computation` a deadline 
 	end select;
 
 
-## clocks
+## Timing faults and execution-time clocks
+
+
