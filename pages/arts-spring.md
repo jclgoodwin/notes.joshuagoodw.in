@@ -131,7 +131,7 @@ Give up if the entry call isn't immediately let through the barrier:
 Clearly, resource control often involves allocating different quantities of resources.
 This quantity might be passed as a parameter. So it's annoying that barriers don't have access to parameters.
 
-(**Bloom's criteria** describes this and other various information that might be useful to know, making the problem even clearer.)
+(**Bloom's criteria** describes this and other various information that might be useful to know, of which many are potentially passed parameters, making the problem even clearer.)
 
 How to solve this? A "double interaction"? That would require atomicity to be done properly, or there'd be an opportunity for unwanted abortion.
 
@@ -302,10 +302,102 @@ We will use the "higher/bigger number, higher/bigger/more important priority" co
 
 ### Priority ceiling locking
 
-Protected objects assigned ceilings.
+Protected objects A assigned a ceiling greater than or equal to the base priority of the highest-priority.
+
+Erog, greater than or eqhis enforces mutual exclusion (if a task that wants to access , ), . 
 
 
-# 8. Programming with other dispatching/scheduling systems
+## 8. Programming with other dispatching/scheduling systems
+
+
+
+## 9. Low-level programming
+
+Recall basic things from previous architecture modules.
+
+Register and record representation, definition and use all makes sense.
+
+In Ada:
+
+* Devices modelled as tasks
+* Interrupt handlers are parameterless protected procedure calls (PPs exist within protected objects)
+
+Representation aspects are how we instruct the compiler about how types should be internally represented (usually an implementation detail we normally don't care about) for maximal synergy with how the low-level stuff is.
+
+### Interrupt model
+
+Interrupts are generated (in underlying hardware) and delivered (when the interrupt handler is invoked).
+The interrupt handler invocation is guaranteed to happen exactly once per interrupt.
+
+Two ways to specify handlers. In protected unit specification:
+
+    pragma Interrupt_Handler(Handler_Name);
+
+This ...
+
+Or PU body or specification:
+
+    pragma Attach_Handler(Handler_Name, Expression);
+
+This ...
+
+
+## 10. Reliability & fault tolerance
+
+We focus on faults caused by software design errors.
+
+### Error recovery
+
+Forward error recovery
+
+: Continue from an erroneous state, selectively correcting the system state and making the environment safe
+
+Backward error recovery
+
+: Try and reverse actions (roll back to some previous safe state, then re-proceed with different algorithm, or same algorithm if it might have been a transient error). Difficult to reverse changes to the environment!
+
+
+...all a bit wishy-washy. Hasn't appeared in an exam paper yet, but maybe that means it's more likely to appear in future.
+
+
+## 11. Exception handling & asynchronous notifications
+
+### Exception handling in general
+
+Exception handling allows forward error recovery.
+
+Exception handling may be synchronous or asynchronous.
+Synchronous: as soon as the errant operation is performed, the performer gets the exception.
+Asynchronous: the exception may be raised some time after the error occurs, perhaps even in a different task altogether!
+
+Exceptions may be...
+
+<table>
+<tr>
+<td></td>
+<td></td>
+<th colspan="2" scope="col">Detected by the...</th>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>Environment</td>
+<td>Application</td>
+</tr>
+<tr>
+<th rowspan="2">Raised...</th>
+<td>Asynchronously</td>
+<td>Failure of program-defined assertion check</td>
+</tr>
+<tr>
+<td>Synchronously</td>
+<td>Array bounds error, divide by zero</td>
+</tr>
+</table>
+
+### Resumption versus termination model
+
+"Termination" does not mean a program or task terminating, just that 
 
 
 ## 12. Asynchronous transfer of control
