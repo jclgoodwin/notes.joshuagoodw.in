@@ -170,7 +170,8 @@ code,
 pre {
   background: lighten($pale, 5%);
   font-family: "Ubuntu Mono", Inconsolata, Consolas, monospace;
-  font-size: 14px;
+  font-size: 0.9em;
+  overflow: auto;
   padding: 0 2px;
 }
 
