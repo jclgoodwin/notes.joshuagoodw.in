@@ -155,13 +155,157 @@ Including `with abort` says "reinstate any timeouts and allow the task to be abo
 
 ## 5. Clocks & time
 
+Recall the concept of time, something humans have developed throughout history.
+
+Programming language users need to be able to access clocks to measure the passage of time, etc.
+
+### `Ada.Calendar`
+
+* Like the clock on the wall. Based on implementation-dependent things.
+* Notion of durations, as well as specific points in the calendar.
+* Addition, subtraction, less than and greater than all included
+    - operator overloading
+    - infix notation
+* Makes good use of Ada's type system.
+
+Probably not suitable for measuring execution times, etc -- there is a danger of context switches, especially with lower-priority tasks.
+Also, time can go fall and spring (leap seconds, etc).
+
+
+### `Ada.Real_Time`
+
+* Monotonic - only ticks forwards
+* Completely divorced from `Ada.Calendar`
+
+### Delaying a task
+
+Relative delays:
+
+    delay 10.0;
+    -- continue executing...
+
+The only thing this guarantees is that the task won't continue for 10.0 units of time: "accurate only in its lower bound".
+
+On the other bound, my clock might not be granular enough (e.g. it might have a granularity of 3.0 units, delaying me for 2.0 more units resulting in an overall delay of 12.0)
+
+Absolute delays:
+
+    delay 
+
+
+### Drift
+
+A problem.
+
+#### Local drift
+
+The problem of 
+
+
+#### Cumulative drift
+
+Attempting to perform an action on average every _n_ seconds? The local drift could superimpose when absolute delays are used.
+
+So periodic activities must be constructed carefully, in order to prevent cumulative drift:
+
+        Interval : constant Duration := 7.0;
+        Next Time : Time; -- increases by `Duration` exactly on every loop iteration
+    begin
+        Next_Time := Clock + Interval;
+        loop
+            -- action goes here
+            delay until Next_Time; -- (Next_Time could be in the past, in which case no delay)
+            Next_Time := Next_Time + Interval;
+        end loop;
+    end T;
+
+### Timeouts
+
+#### ...on entry calls
+
+    select
+        -- entry call goes here
+    or
+        delay 4.3;
+        null; -- can be omitted or replaced by other statements to be executed
+    end select;
+
+#### ...on actions
+
+    select
+        delay 3.45;
+    then abort
+        -- action goes here
+    end select;
+
+#### Imprecise computations
+
+A key use-case for timeouts... opportunity to compute something more precisely if there's time.
+
+### Timing events
+
+Allow specification of a "handler" (a bit of code -- doesn't have to be encased in a task) to be executed at a particular time.
+
+    Set_Handler(Event : in out Timing_Event; At_Time : Time;      Handler : Timing_Event_Handler);
+    Set_Handler(Event : in out Timing_Event; In_Time : Time_Span; Handler : Timing_Event_Handler);
+
+`Handler` is a pointer to a procedure that is declared in a protected object.
+
+See [the next lecture](#interrupt-triggered) for more on interrupt handling, which is very similar to this.
 
 
 ## 6. Programming common real-time abstractions
 
+Recall things from the Autumn...
+
 (We assume, for now, that schedulability analysis is good and shows that deadlines can be met.)
 
+### Periodics
 
+Basically the same as the cumulative drift solution from the previous 
+
+### Aperiodics & sporadics
+
+Recall that sporadics have a minimum inter-arrival time (plain old "aperiodic" non-periodics do not).
+
+#### Interrupt-triggered
+
+Interrupt handlers are protected procedures.
+
+Later lectures will explain this further.
+
+Handling interrupts:
+
+One approach is to loop, waiting for the next interrupt each time. But interrupts are lost if not handled fast enough.
+
+It's useful to turn off interrupts between an interrupt occurring and the next minimum inter-arrival time occurring...
+
+### Jitter
+
+Implementations of periodic tasks liker [what we did in the previous lecture](#cumulative-drift) are not perferct.
+Competition with other tasks causes variation in when the task "completes" each period (this is called jitter).
+
+The solution involves timing events.
+
+
+## 7. Programming priority-based systems
+
+Recall things, including that priority inheritance solves the problem of priority inversion. Bigger range of priorities allows better schedulability.
+
+We will use the "higher/bigger number, higher/bigger/more important priority" convention (a la Linux).
+
+### A task's base priority
+
+    task Task_Name is
+        pragma Priority(10);
+        -- [...]
+
+### Priority ceiling locking
+
+Protected objects assigned ceilings.
+
+
+# 8. Programming with other dispatching/scheduling systems
 
 
 ## 12. Asynchronous transfer of control
