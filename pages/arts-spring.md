@@ -14,11 +14,92 @@ Mostly just remembering things from the previous term.
 One speck of interest: one feature/property of a real-time system that I probably wouldn't think of immediately is **support for arithmetic**.
 
 
+
 ## 2. Tasks in Ada
 
-Ada's representation of 
+### Some Ada recapping
+
+An Ada program consists of one or more "library units":
+
+            Ada program
+              /     \    
+             /       \
+    subprograms       \
+    (procedures,     packages
+    functions)         /  \
+                      /    \
+         specificication   body
+
+Ada is block-structured:
+
+    declare
+      -- define types, objects, subprograms, TASKS...
+    begin
+      -- statements
+    exception
+      -- exception handlers
+    end;
+
+"A block can be placed anywhere a statement can be placed"
+
+### Tasks
+
+* "The unit of concurrency"
+
+* Must be **declared** explicitly, which can be done at any program level
+
+* Are **created implicitly** upon entry to the scope of their declaration _or_ by the action of an **allocator**
 
 You can define a task type, or an individual task.
+
+#### Means of inter-task communication and synchronisation
+
+* The _rendezvous_
+  - A form of synchronised message passing
+* Shared variables
+* Protected objects
+  - A form of _monitor_
+
+### Task types
+
+#### Speficication
+
+    task type Server (Init : Params) is
+      -- entries
+      entry Service (Input : in Params; Output : out Params);
+    private
+      -- hidden entries
+      entry Internal_Services;
+    end Server;
+
+`(Init : Params)` is an optional "discriminant" definining 
+"paramaters that can be passed to instances of the task type at [...] creation time".
+
+#### Body
+
+    task body Server is
+
+### Shared variables
+
+When the rendezvous, protected objects, or other forms of task synchronisation are used,
+it's fine and safe to pass data between two tasks.
+
+But in other cases, compiler optimisations sometimes mean variables are kept in registers,
+so writes to variables are not always written to memory immediately.
+So a reader of a shared variable might not get the actual latest value. 😞
+
+There are **safe conditions** in which this problem won't occur: 😌
+
+| Task A | Task B |
+|--------|--------|
+| Reads/writes variable | Reads/writes variable |
+| Activates task B | |
+
+*   The activation of a task involves reading/writing a variable,
+    and then the task waiting for the completion of the activation reads/writes the variable
+*   Task A reads/writes a variable,
+    and Task B waits for task A to terminate before reading/writing the variable
+*   Task A reads/writes before...
 
 
 ### Dynamic task creation
@@ -400,11 +481,13 @@ Exceptions may be...
 "Termination" does not mean a program or task terminating, just that 
 
 
+
+
 ## 12. Asynchronous transfer of control
 
 "when one task's flow of execution is changed by the action of an external agent ... [such as] another task or the passage of time"
 
-This is a clever fragment that sort of gives `Expensive_Computation` a deadline of 1.0 seconds:
+This is a clever fragment that sort of gives `Expensive_Computation` a deadline of 1.0 seconds (i.e. the passage of time is the external agent):
 
     select
         delay 1.0;
