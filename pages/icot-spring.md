@@ -267,3 +267,246 @@ A parity bit ... modular addition
 (My mate General Bounds from the army, eh?)
 
 
+## Summer 2013 exam paper
+
+1.  1.  Shannon:
+
+        | $$x$$ | $$p(x)$$ | Information contents ($$\left \lceil \log_2  \frac{1}{p_k} \right \rceil$$) | Suitable codeword
+        |-------|----------|---|----
+        |   a   |   0.40   | 2 | 00
+        |   b   |   0.19   | 3 | 011
+        |   c   |   0.18   | 3 | 010
+        |   d   |   0.13   | 3 | 101
+        |   e   |   0.10   | 4 | 1110
+  
+        Average length:
+  
+              2 × 0.40
+            + 3 × (0.19 + 0.18 + 0.13)
+            + 4 × 0.10
+            -----------------
+            = 0.8 + 0.4 + 1.5
+            -----------------
+            = 2.7 bits per symbol
+
+    2.  Fano:
+
+        | $$x$$ | $$p(x)$$ | Length | Suitable codeword
+        |-------|----------|---|----
+        |   a   |   0.40   | 2 | 00
+        |   b   |   0.19   | 2 | 01
+        |   c   |   0.18   | 3 | 100
+        |   d   |   0.13   | 4 | 1010
+        |   e   |   0.10   | 4 | 1011
+
+        Average length:
+
+            + 2 × 0.40 
+            + 2 × 0.19 
+            + 3 × 0.18 
+            + 4 × 0.13 
+            + 4 × 0.10 
+            ----------------------------------
+            = 0.80 + 0.38 + 0.54 + 0.52 + 0.40
+            ----------------------------------
+            = 2.64 bits per symbol
+
+    4.  Huffman:
+
+        | $$x$$ | $$p(x)$$ | Suitable codeword
+        |-------|----------|------------------
+        |   a   |   0.40   | 
+        |   b   |   0.19   | 
+        |   c   |   0.18   |   
+        |   d   |   0.13   |    1
+        |   e   |   0.10   |    0
+
+        <table>
+          <thead><th>x</th><th>p(x)</th><th>Suitable codeword</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>a</td>
+              <td>0.40</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>b</td>
+              <td>0.19</td>
+              <td><span style="background:yellow">1</span></td>
+            </tr>
+            <tr>
+              <td>c</td>
+              <td>0.18</td>
+              <td><span style="background:yellow">0</span></td>
+            </tr>
+            <tr>
+              <td>d</td>
+              <td rowspan="2">0.23</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>e</td>
+
+              <td>0</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table>
+          <thead><th>x</th><th>p(x)</th><th>Suitable codeword</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>a</td>
+              <td>0.40</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>b</td>
+              <td rowspan="2">0.37</td>
+              <td><span style="background:yellow">1</span>1</td>
+            </tr>
+            <tr>
+              <td>c</td>
+
+              <td><span style="background:yellow">1</span>0</td>
+            </tr>
+            <tr>
+              <td>d</td>
+              <td rowspan="2">0.23</td>
+              <td><span style="background:yellow">0</span>1</td>
+            </tr>
+            <tr>
+              <td>e</td>
+
+              <td><span style="background:yellow">0</span>0</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table>
+          <thead><th>x</th><th>p(x)</th><th>Suitable codeword</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>a</td>
+              <td>0.40</td>
+              <td><span style="background:yellow">0</span></td>
+            </tr>
+            <tr>
+              <td>b</td>
+              <td rowspan="4">0.60</td>
+              <td><span style="background:yellow">1</span>11</td>
+            </tr>
+            <tr>
+              <td>c</td>
+
+              <td><span style="background:yellow">1</span>10</td>
+            </tr>
+            <tr>
+              <td>d</td>
+
+              <td><span style="background:yellow">1</span>01</td>
+            </tr>
+            <tr>
+              <td>e</td>
+
+              <td><span style="background:yellow">1</span>00</td>
+            </tr>
+          </tbody>
+        </table>
+
+        Average length:
+
+              0.40 × 1
+            + 0.60 × 3
+            ----------
+            = 2.20 bits per symbol
+
+2.  1.  Counting:
+
+             rowrowyourboatgentlydownthestream | Frequency
+             r  r     r                   r    | 4
+              o  o  o   o         o            | 5
+               w  w                w           | 3
+                   y            y              | 2
+                     u                         | 1
+                       b                       | 1
+                         a                  a  | 2
+                          t   t      t   t     | 4
+                           g                   | 1
+                            e          e   e   | 3
+                             n      n          | 2
+                               l               | 1
+                                 d             | 1
+                                      h        | 1
+                                        s      | 1
+                                             m | 1
+    2.  Huffman:
+
+             r   w   t   n   a   o   w   y   m   s   h   d   l   g   b   u
+            ---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---
+             4   3   4   2   2   5   3   2  [1] [1] [1] [1] [1] [1] [1] [1]
+             |   |   |   |   |   |   |   |    \ /     \ /     \ /     \ /
+             4   3   4  [2] [2]  5   3   2    [2]     [2]     [2]     [2]
+             |   |   |    \ /    |   |   |       \   /           \   /
+             4   3   4     4     5  [3] [2]        4               4
+             |   |   |     |     |    \ /          |               |
+            [4] [3]  4     4     5     5           4               4 
+              \ /    |     |     |     |           |               |
+               7    [4]   [4]    5     5          [4]             [4]
+               |       \ /       |     |               \       /
+               7        8       [5]   [5]                  8
+               |        |          \ /                     |
+              [7]      [8]         10                      8
+                 \    /             |                      |
+                   15             [10]                    [8]
+                                         \            /
+                                               18
+
+        Symbol|Expected codeword length|||||       |      |       |        |Codeword
+        -|
+        r     |3|     |      |      | **0**|      0|     0| **0**0|      00|**0**00|
+        w     |3|     |      |      | **1**|      1|     1| **0**1|      01|**0**01|
+        t     |3|     |      |      |      |  **0**|     0| **1**0|      10|**0**10|
+        n     |4|     | **0**|   0  |     0| **1**0|    10|**1**10|     110|**0**110|
+        a     |4|     | **1**|   1  |     1| **1**1|    11|**1**11|     111|**0**111|
+        o     |3|     |      |      |      |       | **0**|      0|  **0**0| **1**00|
+        w     |4|     |      | **0**|     0|      0|**1**0|     10| **0**10| **1**010|
+        y     |4|     |      | **1**|     1|      1|**1**1|     11| **0**11| **1**011|
+        m     |5|**0**|**0**0|  00  |    00|**0**00|   000|    000|**1**000|**1**1000|
+        s     |5|**1**|**0**1|  01  |    01|**0**01|   001|    001|**1**001|**1**1001|
+        h     |5|**0**|**1**0|  10  |    10|**0**10|   010|    010|**1**010|**1**1010|
+        d     |5|**1**|**1**1|  11  |    11|**0**11|   011|    011|**1**011|**1**1011|
+        l     |5|**0**|**0**0|  00  |    00|**1**00|   100|    100|**1**100|**1**1100|
+        g     |5|**1**|**0**1|  01  |    01|**1**01|   101|    101|**1**101|**1**1101|
+        b     |5|**0**|**1**0|  10  |    10|**1**10|   110|    110|**1**110|**1**1110|
+        u     |5|**1**|**1**1|  11  |    11|**1**11|   111|    111|**1**111|**1**1111|
+
+    3.  Average length:
+
+        Symbol|Frequency|Length|Frequency × Length
+        ------|---------|------|
+        r     |    4    |   3  | 12
+        w     |    3    |   3  | 9
+        t     |    4    |   3  | 12
+        n     |    2    |   4  | 8
+        a     |    2    |   4  | 8
+        o     |    5    |   3  | 15
+        w     |    3    |   4  | 3
+        y     |    2    |   4  | 8
+        m     |    1    |   5  | 5
+        s     |    1    |   5  | 5
+        h     |    1    |   5  | 5
+        d     |    1    |   5  | 5
+        l     |    1    |   5  | 5
+        g     |    1    |   5  | 5
+        b     |    1    |   5  | 5
+        u     |    1    |   5  | 5
+        ======|=========|======|===
+              |    33   |      | 115
+
+        115 ÷ 33 = 3.48 bits per symbol
+
+    4.  Estimate bits per letter gained by the compression:
+
+3.  
+

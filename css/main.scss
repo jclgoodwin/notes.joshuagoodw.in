@@ -170,13 +170,14 @@ code,
 pre {
   background: lighten($pale, 5%);
   font-family: "Ubuntu Mono", Inconsolata, Consolas, monospace;
-  font-size: 0.9em;
+  font-size: 0.95em;
   overflow: auto;
   padding: 0 2px;
 }
 
 pre code {
   display: block;
+  line-height: 1.2em;
 }
 
 table {
@@ -189,7 +190,16 @@ table {
   td {
     border: 1px solid $pale;
     border-width: 0 0 1px 1px;
-    padding: 0 10px;
+    padding: 0 6px;
     text-align: center;
   }
+
+  strong {
+   background: yellow;
+   font-weight: normal;
+  }
+}
+
+li table {
+  margin-left: 0;
 }
