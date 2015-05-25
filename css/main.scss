@@ -175,9 +175,14 @@ pre {
   padding: 0 2px;
 }
 
-pre code {
-  display: block;
+pre {
+  display: inline-block;
   line-height: 1.2em;
+  margin: 0;
+
+  code {
+    padding: 0;
+  }
 }
 
 table {

@@ -560,5 +560,25 @@ A parity bit ... modular addition
 
     4.  Estimate bits per letter gained by the compression:
 
-3.  
+3.  A bipartite graph:
 
+    ![](../images/icot-summer-2013-3-bipartite-graph.svg)
+
+    1. "Derive the parity-check matrix H in systematic form"
+
+            1 — [A] — 2 — [B] — 3
+                 |    |    |
+                 4 — [C] — 5
+                      |
+                      6
+
+
+        |                     |Bit 1|Bit 2|Bit 3|Bit 4|Bit 5|Bit 6|
+        |---------------------|-----|-----|-----|-----|-----|-----|
+        | Parity-check node A |**1**|**1**|  0  |**1**|  0  |  0  |
+        | Parity-check node B |  0  |**1**|**1**|  0  |**1**|  0  |
+        | Parity-check node C |  0  |**1**|  0  |**1**|**1**|**1**|
+
+    2. "Derive the generator matrix G"
+
+    3. 
