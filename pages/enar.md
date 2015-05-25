@@ -18,7 +18,8 @@ title: ENAR
 
 Clear and consistent view of enterprise facilitates decision making and planning
 
-An organisation might want to identify and reduce waste, adhere to new regulations ... or generally better meet its goals and, at the end of the day, make more money
+An organisation might want to identify and reduce waste, adhere to new regulations (e.g. the Clinger--Cohen act )
+... or generally better meet its goals and, at the end of the day, make more money
 
 ### Challenges
 
@@ -48,14 +49,19 @@ These are realised as models and views in enterprise architecture frameworks. Mo
 
 ### Zachman
 
-Not a framework, a taxonomy ("The Enterprise Ontology™")
+Not really a framework (says Roger Sessions),
+but rather a taxonomy ("The Enterprise Ontology™") used to identify stakeholders
+and the roles they play in a business process.
 
-|             | What | How | Where | Who | When | Why |
-|-------------+------+-----+-------+-----+------+-----|
-| Stakeholder |      |     |       |     |      |     |
-| Stakeholder |      |     |       |     |      |     |
-| Stakeholder |      |     |       |     |      |     |
-| Stakeholder |      |     |       |     |      |     |
-| Stakeholder |      |     |       |     |      |     |
-| Stakeholder |      |     |       |     |      |     |
+|             | What     | How | Where | Who | When | Why |
+|-------------+----------+-----+-------+-----+------+-----|
+| Stakeholder | Artifact |     |       |     |      |     |
+| Stakeholder |      	 |     |       |     |      |     |
+| Stakeholder |      	 |     |       |     |      |     |
+| Stakeholder |      	 |     |       |     |      |     |
+| Stakeholder |      	 |     |       |     |      |     |
+| Stakeholder |      	 |     |       |     |      |     |
+
+May be used (i.e. Zachman is used before [more detailed?] EA work)
+
 

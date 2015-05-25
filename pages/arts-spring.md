@@ -62,7 +62,7 @@ You can define a task type, or an individual task.
 
 ### Task types
 
-#### Speficication
+#### Specification
 
     task type Server (Init : Params) is
       -- entries
@@ -504,5 +504,3 @@ but the downside is that it enforces a particular recovery strategy (it stops th
 
 
 ## Timing faults and execution-time clocks
-
-
