@@ -291,25 +291,77 @@ A parity bit ... modular addition
 
     2.  Fano:
 
-        | $$x$$ | $$p(x)$$ | Length | Suitable codeword
-        |-------|----------|---|----
-        |   a   |   0.40   | 2 | 00
-        |   b   |   0.19   | 2 | 01
-        |   c   |   0.18   | 3 | 100
-        |   d   |   0.13   | 4 | 1010
-        |   e   |   0.10   | 4 | 1011
+        Code:
+
+        <table>
+          <thead>
+            <tr>
+              <th>x</th>
+              <th>p(x)</th>
+              <th>Split</th>
+              <th></th>
+              <th>Split</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>a</td>
+              <td>0.40</td>
+              <td rowspan="2">0.59</td>
+              <td>0</td>
+              <td></td>
+              <td><strong>00</strong></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>b</td>
+              <td>0.19
+              
+              <td>0</td>
+              <td></td>
+              <td><strong>01</strong></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>c</td>
+              <td>0.18</td>
+              <td rowspan="3">0.61</td>
+              <td>1</td>
+              <td>0.18</td>
+              <td><strong>10</strong></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>d</td>
+              <td>0.13</td>
+              <td>1</td>
+              <td rowspan="2">0.23</td>
+              <td>11</td>
+              <td><strong>110</strong></td>
+            </tr>
+            <tr>
+              <td>e</td>
+              <td>0.10</td>
+              <td>1</td>
+              <td>11</td>
+              <td><strong>111</strong></td>
+            </tr>
+          </tbody>
+        </table>
 
         Average length:
 
-            + 2 × 0.40 
-            + 2 × 0.19 
-            + 3 × 0.18 
-            + 4 × 0.13 
-            + 4 × 0.10 
+              2 × 0.40
+            + 2 × 0.19
+            + 2 × 0.18
+            + 3 × 0.13
+            + 3 × 0.10
             ----------------------------------
-            = 0.80 + 0.38 + 0.54 + 0.52 + 0.40
+            = 0.80 + 0.38 + 0.36 + 0.39 + 0.30
             ----------------------------------
-            = 2.64 bits per symbol
+            = 2.23 bits per symbol
 
     4.  Huffman:
 
@@ -491,7 +543,7 @@ A parity bit ... modular addition
         n     |    2    |   4  | 8
         a     |    2    |   4  | 8
         o     |    5    |   3  | 15
-        w     |    3    |   4  | 3
+        w     |    3    |   4  | 12
         y     |    2    |   4  | 8
         m     |    1    |   5  | 5
         s     |    1    |   5  | 5
@@ -502,9 +554,9 @@ A parity bit ... modular addition
         b     |    1    |   5  | 5
         u     |    1    |   5  | 5
         ======|=========|======|===
-              |    33   |      | 115
+              |    33   |      | 124
 
-        115 ÷ 33 = 3.48 bits per symbol
+        124 ÷ 33 ≈ 3.757 bits per symbol
 
     4.  Estimate bits per letter gained by the compression:
 
