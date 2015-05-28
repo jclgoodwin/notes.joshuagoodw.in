@@ -560,25 +560,184 @@ A parity bit ... modular addition
 
     4.  Estimate bits per letter gained by the compression:
 
+        16 letters. $$log_2 16 = 4$$. $$4 - 3.576 = 0.423$$
+
 3.  A bipartite graph:
 
     ![](../images/icot-summer-2013-3-bipartite-graph.svg)
 
-    1. "Derive the parity-check matrix H in systematic form"
+    1.  "Derive the parity-check matrix H in systematic form"
 
-            1 — [A] — 2 — [B] — 3
-                 |    |    |
-                 4 — [C] — 5
-                      |
-                      6
+        This seems like a sensible labelling:
+
+             p1 —— [A] —— s1 —— [B] —— p2
+                    |     |      |
+                   s2 —— [C] —— s3
+                          |
+                          p3
 
 
-        |                     |Bit 1|Bit 2|Bit 3|Bit 4|Bit 5|Bit 6|
+        |                     | s1  | s2  | s3  | p1  | p2  | p3  |
         |---------------------|-----|-----|-----|-----|-----|-----|
         | Parity-check node A |**1**|**1**|  0  |**1**|  0  |  0  |
-        | Parity-check node B |  0  |**1**|**1**|  0  |**1**|  0  |
-        | Parity-check node C |  0  |**1**|  0  |**1**|**1**|**1**|
+        | Parity-check node B |**1**|  0  |**1**|  0  |**1**|  0  |
+        | Parity-check node C |**1**|**1**|**1**|  0  |  0  |**1**|
 
-    2. "Derive the generator matrix G"
+        So the code is characterised by this matrix:
 
-    3. 
+        $$
+        H =
+        \begin{pmatrix}
+        1 & 1 & 0 & 1 & 0 & 0 \\
+        1 & 0 & 1 & 0 & 1 & 0 \\
+        1 & 1 & 1 & 0 & 0 & 1
+        \end{pmatrix}
+        $$
+
+        In systematic form:
+
+        $$
+        H = \begin{pmatrix} P & I_3 \end{pmatrix}
+        $$
+
+        where
+
+        $$
+        P =
+        \begin{pmatrix}
+        1 & 1 & 0 \\
+        1 & 0 & 1 \\
+        1 & 1 & 1
+        \end{pmatrix}
+        $$
+
+        (lecture 11, slide 8)
+
+    2.  "Derive the generator matrix G"
+
+        (lecture 11, slide 8)
+
+        $$
+        G = 
+        \begin{pmatrix}
+        I_3 \\
+        P
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+        1 & 0 & 0 \\
+        0 & 1 & 0 \\
+        0 & 0 & 1 \\
+        1 & 1 & 0 \\
+        1 & 0 & 1 \\
+        1 & 1 & 1
+        \end{pmatrix}
+        $$
+
+    3. "Determine the basic parameters $$[n, k, d]$$ ..."
+
+        Number of bits in codewords: 3
+
+        Number of bits in input messages: 3
+
+        Distance (number of bits in which input and output differ): 3
+
+        So: $$[3, 3, 3]$$
+
+    4.  "Construct all the codewords"
+
+        $$
+        \mathbf{c}
+        = G\mathbf{s}
+        = \begin{pmatrix} I_3 \\ P \end{pmatrix} \mathbf{s}
+        = \begin{pmatrix} \mathbf{s}\\ P\mathbf{s} \end{pmatrix}
+        $$
+
+        (I don't quite understand the last step..)
+
+        We need to compute the parity bits ($$P\mathbf{s}$$) for each possible source three-bit word, and then concatenate source bits with them:
+
+        | s | $$P\mathbf{s}$$ | c |
+        |----
+        | 000 | $$\begin{pmatrix}1&1&0\\1&0&1\\1&1&1\end{pmatrix} \begin{pmatrix}0\\0\\0\end{pmatrix} = \begin{pmatrix}0 + 0 + 0\\0 + 0 + 0\\0 + 0 + 0\end{pmatrix} = 000$$ | 000000
+        | 001 | $$\begin{pmatrix}1&1&0\\1&0&1\\1&1&1\end{pmatrix} \begin{pmatrix}0\\0\\1\end{pmatrix} = \begin{pmatrix}1\times0 + 1\times0 + 0\times1 \\1\times0 + 0\times0 + 1\times1 \\1\times0 + 1\times0 + 1\times1\end{pmatrix} = \begin{pmatrix}0\\1\\1\end{pmatrix} = 011$$ | 001011
+        | 010 | $$\begin{pmatrix}1&1&0\\1&0&1\\1&1&1\end{pmatrix} \begin{pmatrix}0\\1\\0\end{pmatrix} = \begin{pmatrix}1\times0 + 1\times1 + 0\times0 \\1\times0 + 0\times1 + 1\times0 \\1\times0 + 1\times1 + 1\times0\end{pmatrix} = \begin{pmatrix}1\\0\\1\end{pmatrix} = 101$$ | 010101
+        | 011 | 110 | 011110
+        | 100 | 111 | 100111  
+        | 101 | 100 | 101100 
+        | 110 | 010 | 110010 
+        | 111 | 001 | 111001 
+
+4.  See the "practical recipe" (lecture 12)
+
+    1.  $$[n, k, d] = [15, 11, 3]$$
+
+        $$r = n - k = 4$$
+
+        A matrix of all 15 non-zero 4-bit binary words:
+
+        $$
+        H =
+        \begin{pmatrix}
+        0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+        0 & 0 & 0 & 1 & 1 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 \\
+        0 & 1 & 1 & 0 & 0 & 1 & 1 & 0 & 0 & 1 & 1 & 0 & 0 & 1 & 1 \\
+        1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1
+        \end{pmatrix}
+        $$
+
+    2.  Permuted in systematic form:
+
+        $$H = \begin{pmatrix}P & I_4 \end{pmatrix}$$
+
+        $$
+        \begin{pmatrix}
+        0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+        0 & 1 & 1 & 1 & 0 & 0 & 0 & 1 & 1 & 1 & 1 \\
+        1 & 0 & 1 & 1 & 0 & 1 & 1 & 0 & 0 & 1 & 1 \\
+        1 & 1 & 0 & 1 & 1 & 0 & 1 & 0 & 1 & 0 & 1
+        \end{pmatrix}
+        $$
+
+        $$
+        I_4 = 
+        \begin{pmatrix}
+        1 & 0 & 0 & 0 \\
+        0 & 1 & 0 & 0 \\
+        0 & 0 & 1 & 0 \\
+        0 & 0 & 0 & 1
+        \end{pmatrix}
+        $$
+
+    3.  Generator matrix:
+
+        $$
+        G = \begin{pmatrix} I_11 \\ P \end{pmatrix}
+        =
+        \begin{pmatrix}
+        1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+        0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+        0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+        0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+        0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\
+        0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+        0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
+        0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\
+        0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\
+        0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\
+        0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+        0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+        0 & 1 & 1 & 1 & 0 & 0 & 0 & 1 & 1 & 1 & 1 \\
+        1 & 0 & 1 & 1 & 0 & 1 & 1 & 0 & 0 & 1 & 1 \\
+        1 & 1 & 0 & 1 & 1 & 0 & 1 & 0 & 1 & 0 & 1
+        \end{pmatrix}
+        $$
+
+    4.  Encode the sequence $$00000000000$$:
+
+        Every row in $$G$$ has an odd number of $$1$$s, so ... 00000000000 0000
+
+        Encode the sequence $$11111111111$$:
+
+        11111111111 1111
+
